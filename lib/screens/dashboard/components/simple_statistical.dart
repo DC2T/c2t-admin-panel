@@ -14,13 +14,13 @@ class SimpleStatistical extends StatelessWidget {
         Responsive(
           mobile: StatisticalInfoCardGridView(
             crossAxisCount: _size.width < 650 ? 2 : 4,
-            childAspectRatio: _size.width < 650 && _size.width > 350 ? 1.9 : 1.5,
+            childAspectRatio: _size.width < 650 && _size.width > 350 ? 1.9 : 1.1,
           ),
           tablet: StatisticalInfoCardGridView(
             childAspectRatio: _size.width < 650 && _size.width > 350 ? 1.5 : 1.9,
           ),
           desktop: StatisticalInfoCardGridView(
-            childAspectRatio: _size.width < 1400 ? 2 : 2.4,
+            childAspectRatio: _size.width < 1400 ? 1.9 : 1.4,
           ),
         ),
       ],

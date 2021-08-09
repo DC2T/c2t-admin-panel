@@ -24,8 +24,7 @@ class StatisticalInfoCard extends StatelessWidget {
         children: [
           Text(
             info.title!,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            softWrap: true,
           ),
           Expanded(
             child: Row(

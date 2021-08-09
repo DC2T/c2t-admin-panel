@@ -1,15 +1,21 @@
 import 'package:admin/responsive.dart';
 import 'package:admin/screens/dashboard/components/my_fields.dart';
 import 'package:admin/screens/dashboard/components/simple_statistical.dart';
+import 'package:admin/screens/dashboard/components/table_statistical_info_grid_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import 'components/header.dart';
+import '../reuseable/header.dart';
 
 import 'components/recent_files.dart';
 import 'components/storage_details.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,6 +36,8 @@ class DashboardScreen extends StatelessWidget {
                       SizedBox(height: defaultPadding),
                       SimpleStatistical(),
                       SizedBox(height: defaultPadding),
+                      // TableStatisticalInfoGridView(),
+                      // SizedBox(height: defaultPadding),
                       RecentFiles(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),

@@ -1,6 +1,11 @@
+import 'package:admin/controllers/ScreenController.dart';
 import 'package:admin/models/MyFiles.dart';
+import 'package:admin/screens/form/movie_form_page.dart';
 import 'package:admin/responsive.dart';
+import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 
 import '../../../constants.dart';
 import 'file_info_card.dart';
@@ -30,7 +35,9 @@ class MyFiles extends StatelessWidget {
                       defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                context.read<ScreenController>().controlScreen(screenName: 'Modifier');
+              },
               icon: Icon(Icons.add),
               label: Text("Add New"),
             ),
