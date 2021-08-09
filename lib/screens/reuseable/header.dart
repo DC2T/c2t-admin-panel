@@ -38,7 +38,7 @@ class Header extends StatelessWidget {
 
 class ProfileCard extends StatelessWidget {
   const ProfileCard({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -75,7 +75,7 @@ class ProfileCard extends StatelessWidget {
 
 class SearchField extends StatelessWidget {
   const SearchField({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override

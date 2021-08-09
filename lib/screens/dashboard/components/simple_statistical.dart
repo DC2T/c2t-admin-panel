@@ -30,7 +30,7 @@ class SimpleStatistical extends StatelessWidget {
 
 class StatisticalInfoCardGridView extends StatelessWidget {
   const StatisticalInfoCardGridView({
-    Key? key,
+    Key key,
     this.crossAxisCount = 4,
     this.childAspectRatio = 1,
   }) : super(key: key);

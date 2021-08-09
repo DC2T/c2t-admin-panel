@@ -1,6 +1,6 @@
 class SimpleStatisticalInfo {
-  final String? svgSrc, title;
-  final int? total;
+  final String svgSrc, title;
+  final int total;
 
   SimpleStatisticalInfo({
     this.svgSrc,

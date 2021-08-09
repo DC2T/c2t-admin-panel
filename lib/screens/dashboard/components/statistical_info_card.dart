@@ -5,8 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class StatisticalInfoCard extends StatelessWidget {
   const StatisticalInfoCard({
-    Key? key,
-    required this.info,
+    Key key,
+    this.info,
   }) : super(key: key);
 
   final SimpleStatisticalInfo info;
@@ -23,7 +23,7 @@ class StatisticalInfoCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            info.title!,
+            info.title,
             softWrap: true,
           ),
           Expanded(
@@ -34,7 +34,7 @@ class StatisticalInfoCard extends StatelessWidget {
                   "${info.total}",
                   style: Theme.of(context)
                       .textTheme
-                      .caption!
+                      .caption
                       .copyWith(color: Colors.white70),
                 ),
                 Container(
@@ -42,7 +42,7 @@ class StatisticalInfoCard extends StatelessWidget {
                   height: 20,
                   width: 24,
                   child: SvgPicture.asset(
-                    info.svgSrc!,
+                    info.svgSrc,
                     color: Colors.white70,
                   ),
                 ),
