@@ -36,9 +36,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       SizedBox(height: defaultPadding),
                       SimpleStatistical(),
                       SizedBox(height: defaultPadding),
-                      // TableStatisticalInfoGridView(),
-                      // SizedBox(height: defaultPadding),
-                      RecentFiles(),
+                      TableStatisticalInfoGridView(),
+                      SizedBox(height: defaultPadding),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
                       if (Responsive.isMobile(context)) StarageDetails(),
