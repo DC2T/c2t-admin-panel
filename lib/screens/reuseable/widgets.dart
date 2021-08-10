@@ -12,39 +12,38 @@ Widget textEditFormFill(BuildContext context,
       Color color,
       Color backgroundColor,
       Function onTap,
-      bool readOnly = false}) {
+      bool readOnly = false,
+      expands = false
+    }) {
   return Container(
     height: height ?? 48,
-    width: width ?? MediaQuery.of(context).size.width,
+    width: width ?? 300,
+    // width: width ?? MediaQuery.of(context).size.width,
+    padding: EdgeInsets.symmetric(horizontal: 8.0),
     decoration: BoxDecoration(
-        color: backgroundColor ?? Colors.grey[300],
-        borderRadius: BorderRadius.vertical(top: Radius.circular(4.0))),
-    child: Align(
-      alignment: Alignment.bottomCenter,
-      child: TextFormField(
-        readOnly: readOnly,
-        onTap: onTap,
-        controller: controller,
-        cursorColor: Colors.black,
-        style: TextStyle(fontSize: 14.0),
-        decoration: InputDecoration(
-          hintText: hintText,
-          contentPadding: EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 8.0),
-          labelText: labelText ?? '',
-          labelStyle: TextStyle(
-            color: color ?? primaryColor,
-          ),
-          helperText: helperText,
-          focusedBorder: onTap == null
-              ? UnderlineInputBorder(
-            borderSide: BorderSide(color: color ?? primaryColor),
-          )
-              : InputBorder.none,
-          enabledBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
-          suffixIcon: Icon(suffixIcon),
+        color: backgroundColor ?? secondaryColor,
+        borderRadius: BorderRadius.circular(defaultBorderRadius)),
+    child: TextFormField(
+      readOnly: readOnly,
+      onTap: onTap,
+      controller: controller,
+      cursorColor: Colors.black,
+      style: TextStyle(fontSize: 14.0),
+      minLines: expands?null:1,
+      maxLines: expands?null:100,
+      expands: expands,
+      decoration: InputDecoration(
+        hintText: hintText??'',
+        labelText: labelText ?? '',
+        labelStyle: TextStyle(
+          color: color ?? primaryColor,
         ),
+        helperText: helperText,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        suffixIcon: suffixIcon!=null?Icon(suffixIcon): null,
       ),
     ),
   );
