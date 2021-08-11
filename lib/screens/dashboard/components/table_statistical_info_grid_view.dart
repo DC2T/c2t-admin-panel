@@ -12,10 +12,14 @@ class TableStatisticalInfoGridView extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: GridView.count(
         primary: false,
-        crossAxisCount: 2,
+        crossAxisCount: (MediaQuery.of(context).size.width < 650) ? 1 : 2,
         crossAxisSpacing: defaultPadding,
         mainAxisSpacing: defaultPadding,
         children: <Widget>[
+          TableStatisticalInfoView(title: 'Top items', iconTitle: Icons.bar_chart,),
+          TableStatisticalInfoView(title: 'Latest items', iconTitle: Icons.grid_3x3,),
+          TableStatisticalInfoView(title: 'Top items', iconTitle: Icons.bar_chart,),
+          TableStatisticalInfoView(title: 'Latest items', iconTitle: Icons.grid_3x3,),
           TableStatisticalInfoView(title: 'Top items', iconTitle: Icons.bar_chart,),
           TableStatisticalInfoView(title: 'Latest items', iconTitle: Icons.grid_3x3,),
         ],
