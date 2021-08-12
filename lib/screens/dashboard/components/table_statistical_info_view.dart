@@ -61,7 +61,8 @@ class TableStatisticalInfoView extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(defaultPadding),
             child: DataTable2(
-              columnSpacing: (_size.width > 600 && _size.width < 1025)?defaultPadding * 2:defaultPadding * 5,
+              columnSpacing: (_size.width > 600 && _size.width < 1025)?defaultPadding * 2:defaultPadding * 4,
+              minWidth: 400.0,
               columns: [
                 DataColumn(
                   label: Text("Movie Name"),
