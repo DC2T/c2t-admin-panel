@@ -33,6 +33,7 @@ dependencies:
   fl_chart:
   provider:
   data_table_2:
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:

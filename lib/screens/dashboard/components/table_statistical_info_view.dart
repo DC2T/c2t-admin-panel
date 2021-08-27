@@ -49,7 +49,7 @@ class TableStatisticalInfoView extends StatelessWidget {
                 ),
                 child: FlatButton(
                   onPressed: () {
-                    context.read<ScreenController>().controlScreen(screenName: 'Modifier');
+                    context.read<ScreenController>().controlScreen(screenName: 'Movie');
                   },
                   child: Text("See More"),
                 ),
