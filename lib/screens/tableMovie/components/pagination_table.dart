@@ -129,7 +129,19 @@ class _PaginationTableState extends State<PaginationTable> {
                           ],
                         );
                       }
-                      return Expanded(child: CircularProgressIndicator());
+                      return Center(
+                        child: Container(
+                          width: 100,
+                          height: _size.height,
+                          child: Center(
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              child: CircularProgressIndicator()
+                            )
+                          )
+                        )
+                      );
                     },
                   )),
             ],
