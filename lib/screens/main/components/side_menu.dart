@@ -26,7 +26,7 @@ class SideMenu extends StatelessWidget {
             },
           ),
           DrawerListTile(
-            title: "Transaction",
+            title: "Modifier",
             svgSrc: "assets/icons/menu_tran.svg",
             press: () {
               context.read<ScreenController>().controlScreen(screenName: 'Modifier');

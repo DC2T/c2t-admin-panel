@@ -6,4 +6,4 @@ const bgColor = Color(0xFF212332);
 const borderColor = Color(0xFFA8A5A5);
 
 const defaultPadding = 16.0;
-const defaultBorderRadius = 16.0;
+const defaultBorderRadius = 10.0;

@@ -20,7 +20,7 @@ class _MovieFormPageState extends State<MovieFormPage> {
           child: Column(
             children: [
               Header(title: "Modifier Movie",),
-              SizedBox(height: defaultPadding * 2),
+              SizedBox(height: defaultPadding),
               MovieForm()
             ],
           ),
