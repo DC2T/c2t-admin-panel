@@ -7,19 +7,15 @@ class TableStatisticalInfoGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: GridView.count(
-        primary: false,
-        crossAxisCount: 2,
-        crossAxisSpacing: defaultPadding,
-        mainAxisSpacing: defaultPadding,
-        children: <Widget>[
-          TableStatisticalInfoView(title: 'Top items', iconTitle: Icons.bar_chart,),
-          TableStatisticalInfoView(title: 'Latest items', iconTitle: Icons.grid_3x3,),
-        ],
-      ),
+    return GridView.count(
+      primary: false,
+      crossAxisCount: 2,
+      crossAxisSpacing: defaultPadding,
+      mainAxisSpacing: defaultPadding,
+      children: <Widget>[
+        Expanded(child: TableStatisticalInfoView(title: 'Top items', iconTitle: Icons.bar_chart,)),
+        Expanded(child: TableStatisticalInfoView(title: 'Latest items', iconTitle: Icons.grid_3x3,)),
+      ],
     );
   }
 }

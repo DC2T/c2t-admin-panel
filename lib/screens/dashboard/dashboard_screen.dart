@@ -1,3 +1,4 @@
+import 'package:admin/models/RecentFile.dart';
 import 'package:admin/responsive.dart';
 import 'package:admin/screens/dashboard/components/my_fields.dart';
 import 'package:admin/screens/dashboard/components/simple_statistical.dart';
@@ -36,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       SizedBox(height: defaultPadding),
                       SimpleStatistical(),
                       SizedBox(height: defaultPadding),
-                      TableStatisticalInfoGridView(),
+                      RecentFiles(),
                       SizedBox(height: defaultPadding),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
