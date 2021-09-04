@@ -1,7 +1,11 @@
+import 'dart:ui';
+
+import 'package:admin/controllers/ScreenController.dart';
 import 'package:admin/models/RecentFile.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
@@ -16,6 +20,7 @@ class TableStatisticalInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _size = MediaQuery.of(context).size;
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -34,6 +39,23 @@ class TableStatisticalInfoView extends StatelessWidget {
                 title,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
+              Spacer(),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.refresh)
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: FlatButton(
+                  onPressed: () {
+                    context.read<ScreenController>().controlScreen(screenName: 'Movie');
+                  },
+                  child: Text("See More"),
+                ),
+              )
             ],
           ),
           SizedBox(height: 5.0),
@@ -41,17 +63,14 @@ class TableStatisticalInfoView extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(defaultPadding),
             child: DataTable2(
-              columnSpacing: defaultPadding,
-              minWidth: 600,
+              columnSpacing: (_size.width > 600 && _size.width < 1025)?defaultPadding * 2:defaultPadding * 4,
+              minWidth: 400.0,
               columns: [
                 DataColumn(
-                  label: Text("File Name"),
+                  label: Text("Movie Name"),
                 ),
                 DataColumn(
-                  label: Text("Date"),
-                ),
-                DataColumn(
-                  label: Text("Size"),
+                  label: Text("Rating"),
                 ),
               ],
               rows: List.generate(
@@ -62,6 +81,7 @@ class TableStatisticalInfoView extends StatelessWidget {
           ),
         ],
       ),
+
     );
   }
 }
@@ -69,23 +89,9 @@ class TableStatisticalInfoView extends StatelessWidget {
 DataRow recentFileDataRow(RecentFile fileInfo) {
   return DataRow(
     cells: [
-      DataCell(
-        Row(
-          children: [
-            SvgPicture.asset(
-              fileInfo.icon,
-              height: 30,
-              width: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-              child: Text(fileInfo.title),
-            ),
-          ],
-        ),
-      ),
+      DataCell(Text(fileInfo.title)),
       DataCell(Text(fileInfo.date)),
-      DataCell(Text(fileInfo.size)),
     ],
   );
 }
+

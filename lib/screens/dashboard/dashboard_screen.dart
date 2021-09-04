@@ -53,6 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     flex: 2,
                     child: StarageDetails(),
                   ),
+
               ],
             )
           ],

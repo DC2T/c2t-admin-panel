@@ -26,20 +26,22 @@ class SideMenu extends StatelessWidget {
             },
           ),
           DrawerListTile(
-            title: "Transaction",
+            title: "Modifier",
             svgSrc: "assets/icons/menu_tran.svg",
             press: () {
               context.read<ScreenController>().controlScreen(screenName: 'Modifier');
             },
           ),
           DrawerListTile(
-            title: "Task",
-            svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
+            title: "Table Movie",
+            svgSrc: "assets/icons/menu_doc.svg",
+            press: () {
+              context.read<ScreenController>().controlScreen(screenName: 'Movie');
+            },
           ),
           DrawerListTile(
             title: "Documents",
-            svgSrc: "assets/icons/menu_doc.svg",
+            svgSrc: "assets/icons/menu_task.svg",
             press: () {},
           ),
           DrawerListTile(
