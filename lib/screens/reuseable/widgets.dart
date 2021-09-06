@@ -15,8 +15,7 @@ Widget textEditFormFill(
   Function onTap,
   Function onChange,
   bool readOnly = false,
-  bool obscureText,
-  bool expands = false,
+  expands = false,
 }) {
   return Container(
     child: Column(
@@ -51,7 +50,6 @@ Widget textEditFormFill(
             minLines: expands ? null : 1,
             maxLines: expands ? null : 100,
             expands: expands,
-            obscureText: obscureText ?? false,
             decoration: InputDecoration(
               hintText: hintText ?? '',
               helperText: helperText,
