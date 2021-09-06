@@ -82,7 +82,7 @@ class _PaginationTableState extends State<PaginationTable> {
                       width: _runtimeWidth,
                       height: _headerTableHeight,
                       child: TextHeaderTable(
-                        text: 'RUN TIME',
+                        text: 'RUNTIME',
                       )),
                   Container(
                       width: _actionsWidth,
@@ -94,7 +94,7 @@ class _PaginationTableState extends State<PaginationTable> {
               ),
               Container(
                   width: 1230,
-                  child: FutureBuilder<FinalResponse>(
+                  child: FutureBuilder<FinalResponseGetMovie>(
                     future: fetchMovie(pageM, perpageM),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -225,17 +225,17 @@ class _buildRowData extends StatelessWidget {
         child: Row(
           children: [
             CellData(
-                content: Text(id.toString()),
+                content: Text(id.toString()??'ID'),
                 width: _idWidth,
                 height: _heightDataCell),
             CellData(
-                content: Image(
+                content: mov.photo.length > 0 ? Image(
                   image: NetworkImage(mov.photo),
-                ),
+                ): Text('No photo to display'),
                 width: _imageWidth,
                 height: _heightDataCell),
             CellData(
-                content: Text(mov.title),
+                content: Text(mov.title??'NAME MOVIE'),
                 width: _nameWidth,
                 height: _heightDataCell),
             CellData(
@@ -251,22 +251,22 @@ class _buildRowData extends StatelessWidget {
                       color: Colors.yellowAccent,
                     ),
                     SizedBox(width: 10),
-                    Text((mov.pointVoted.toString())),
+                    Text(mov.pointVoted.toString()??''),
                   ],
                 )),
                 width: _ratingWidth,
                 height: _heightDataCell),
             CellData(
-                content: Text(mov.views.toString()),
+                content: Text(mov.views.toString()??''),
                 width: _viewsWidth,
                 height: _heightDataCell),
             CellData(
-                content: Text(mov.runtime),
+                content: Text(mov.runtime??''),
                 width: _runtimeWidth,
                 height: _heightDataCell),
             CellData(
                 content: ActionButtons(
-                  mov: mov,
+                  idMovie: mov.id,
                   reload: setPage,
                   pageRecent: pageRecent,
                 ),

@@ -38,17 +38,13 @@ class _MovieFormState extends State<MovieForm> {
               ),
             ),
             Divider(height: 2, color: Colors.white),
-            Container(
-              width: screenSize.width,
-              //height: screenSize.height,
-              padding: EdgeInsets.all(defaultPadding),
-              child: TabBarView(
-                children: [
-                  MovieTab(
-                    screenSize: screenSize,
-                  ),
-                  Icon(Icons.computer),
-                ],
+            Expanded(
+              child: Container(
+                width: screenSize.width,
+                child: TabBarView(children: [
+                  Tab1(),
+                  Icon(Icons.computer)
+                ]),
               ),
             ),
           ],
@@ -56,6 +52,25 @@ class _MovieFormState extends State<MovieForm> {
       ),
     );
     //return MovieTab(screenSize: screenSize);
+  }
+}
+
+class Tab1 extends StatefulWidget {
+  Tab1({Key key}) : super(key: key);
+
+  @override
+  _Tab1State createState() => _Tab1State();
+}
+
+class _Tab1State extends State<Tab1> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 50,
+      height: 50,
+      color: Colors.white,
+       child: null,
+    );
   }
 }
 
@@ -71,57 +86,11 @@ class MovieTab extends StatefulWidget {
   _MovieTabState createState() => _MovieTabState();
 }
 
-class Animal {
-  final int id;
-  final String name;
-
-  Animal({
-    this.id,
-    this.name,
-  });
-}
 class _MovieTabState extends State<MovieTab> {
   String img = '';
   String title = '';
   DateTime pickedDate;
 
-  static List<Animal> _animals = [
-    Animal(id: 1, name: "Lion"),
-    Animal(id: 2, name: "Flamingo"),
-    Animal(id: 3, name: "Hippo"),
-    Animal(id: 4, name: "Horse"),
-    Animal(id: 5, name: "Tiger"),
-    Animal(id: 6, name: "Penguin"),
-    Animal(id: 7, name: "Spider"),
-    Animal(id: 8, name: "Snake"),
-    Animal(id: 9, name: "Bear"),
-    Animal(id: 10, name: "Beaver"),
-    Animal(id: 11, name: "Cat"),
-    Animal(id: 12, name: "Fish"),
-    Animal(id: 13, name: "Rabbit"),
-    Animal(id: 14, name: "Mouse"),
-    Animal(id: 15, name: "Dog"),
-    Animal(id: 16, name: "Zebra"),
-    Animal(id: 17, name: "Cow"),
-    Animal(id: 18, name: "Frog"),
-    Animal(id: 19, name: "Blue Jay"),
-    Animal(id: 20, name: "Moose"),
-    Animal(id: 21, name: "Gecko"),
-    Animal(id: 22, name: "Kangaroo"),
-    Animal(id: 23, name: "Shark"),
-    Animal(id: 24, name: "Crocodile"),
-    Animal(id: 25, name: "Owl"),
-    Animal(id: 26, name: "Dragonfly"),
-    Animal(id: 27, name: "Dolphin"),
-  ];
-  final _items = _animals
-      .map((animal) => MultiSelectItem<Animal>(animal, animal.name))
-      .toList();
-  //List<Animal> _selectedAnimals = [];
-  List<Animal> _selectedAnimals2 = [];
-  List<Animal> _selectedAnimals3 = [];
-  //List<Animal> _selectedAnimals4 = [];
-  List<Animal> _selectedAnimals5 = [];
   final _multiSelectKey = GlobalKey<FormFieldState>();
 
   void initState() {
@@ -133,7 +102,6 @@ class _MovieTabState extends State<MovieTab> {
   Widget build(BuildContext context) {
     return Container(
         width: widget.screenSize.width,
-        //height: widget.screenSize.height,
         padding: EdgeInsets.all(defaultPadding),
         child: Padding(
           padding: const EdgeInsets.all(defaultPadding),
