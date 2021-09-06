@@ -41,8 +41,9 @@ class _MovieFormState extends State<MovieForm> {
             Expanded(
               child: Container(
                 width: screenSize.width,
+                height: screenSize.height,
                 child: TabBarView(children: [
-                  Tab1(),
+                  MovieTab(screenSize: screenSize),
                   Icon(Icons.computer)
                 ]),
               ),
@@ -54,26 +55,6 @@ class _MovieFormState extends State<MovieForm> {
     //return MovieTab(screenSize: screenSize);
   }
 }
-
-class Tab1 extends StatefulWidget {
-  Tab1({Key key}) : super(key: key);
-
-  @override
-  _Tab1State createState() => _Tab1State();
-}
-
-class _Tab1State extends State<Tab1> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      height: 50,
-      color: Colors.white,
-       child: null,
-    );
-  }
-}
-
 class MovieTab extends StatefulWidget {
   const MovieTab({
     Key key,
