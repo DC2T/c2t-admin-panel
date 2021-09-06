@@ -1,10 +1,9 @@
 import 'dart:io';
 
 import 'package:admin/constants.dart';
-import 'package:admin/screens/reuseable/widgets.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'movie_tab.dart';
+import 'server_tab.dart';
 
 class MovieForm extends StatefulWidget {
   const MovieForm({Key key}) : super(key: key);
@@ -43,7 +42,7 @@ class _MovieFormState extends State<MovieForm> {
               height: screenSize.height,
               child: TabBarView(children: [
                 MovieTab(screenSize: screenSize),
-                Icon(Icons.computer)
+                ServerTab(screenSize: screenSize),
               ]),
             ),
           ],
