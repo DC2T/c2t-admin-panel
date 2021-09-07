@@ -27,12 +27,12 @@ class _MovieFormState extends State<MovieForm> {
           children: [
             Container(
               width: screenSize.width,
-              height: 50,
+              height: 55,
               child: TabBar(
                 indicatorColor: Colors.white,
                 tabs: [
-                  Tab(icon: Icon(Icons.movie)),
-                  Tab(icon: Icon(Icons.computer)),
+                  Tab(icon: Icon(Icons.movie), text: "Movie"),
+                  Tab(icon: Icon(Icons.computer), text: "Server"),
                 ],
               ),
             ),
