@@ -1,19 +1,22 @@
 import 'package:admin/constants.dart';
 import 'package:flutter/material.dart';
 
-Widget textEditFormFill(BuildContext context,
-    {TextEditingController controller,
-    double height,
-    double width,
-    String hintText,
-    String labelText,
-    String helperText,
-    IconData suffixIcon,
-    Color color,
-    Color backgroundColor,
-    Function onTap,
-    bool readOnly = false,
-    expands = false}) {
+Widget textEditFormFill(
+  BuildContext context, {
+  TextEditingController controller,
+  double height,
+  double width,
+  String hintText,
+  String labelText,
+  String helperText,
+  IconData suffixIcon,
+  Color color,
+  Color backgroundColor,
+  Function onTap,
+  Function onChange,
+  bool readOnly = false,
+  expands = false,
+}) {
   return Container(
     child: Column(
       children: [
@@ -24,6 +27,7 @@ Widget textEditFormFill(BuildContext context,
             textAlign: TextAlign.start,
             style: TextStyle(
               color: Colors.white,
+              fontSize: 14,
             ),
           ),
         ),
@@ -38,8 +42,11 @@ Widget textEditFormFill(BuildContext context,
           child: TextFormField(
             readOnly: readOnly,
             onTap: onTap,
+            onChanged: (value) {
+              onChange(value);
+            },
             controller: controller,
-            cursorColor: Colors.black,
+            cursorColor: Colors.white,
             style: TextStyle(fontSize: 14.0),
             minLines: expands ? null : 1,
             maxLines: expands ? null : 100,
@@ -80,7 +87,7 @@ class _MultiSelectInputState extends State<MultiSelectInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+        height: 400,
         child: Stack(
           children: [
             Container(
@@ -98,27 +105,28 @@ class _MultiSelectInputState extends State<MultiSelectInput> {
                 onTap: () {},
               ),
             ),
-            showItem?Container(
-              width: MediaQuery.of(context).size.width, 
-              margin: EdgeInsets.only(top: 48),
-              color: Colors.red, 
-              child: Column(
-                children: [
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                  Text('drop box'),
-                ],
-              )
-            ):Container(),
+            showItem
+                ? Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(top: 48),
+                    color: Colors.red,
+                    child: Column(
+                      children: [
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                        Text('drop box'),
+                      ],
+                    ))
+                : Container(),
           ],
         ));
   }

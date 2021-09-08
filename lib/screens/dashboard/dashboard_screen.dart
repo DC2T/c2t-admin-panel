@@ -37,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       SizedBox(height: defaultPadding),
                       SimpleStatistical(),
                       SizedBox(height: defaultPadding),
-                      RecentFiles(),
+                      // RecentFiles(),
                       SizedBox(height: defaultPadding),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),

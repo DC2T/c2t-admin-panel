@@ -13,8 +13,9 @@ class DBQuery{
   }
 
 
-  Future findOne({int id, String slug, String title, String name}) async {
+  Future findOne(id) async {
     var url = Uri.parse('${this.uri}/view?_id=${id.toString()}');
+
     print(url);
     var response = await http.get(url, headers: AppConfig.headers);
 
@@ -25,8 +26,8 @@ class DBQuery{
   }
 
   Future find(params) async {
-
     var url = Uri.parse('${this.uri}/view?${params.toString()}');
+
     print(url);
     var response = await http.get(url, headers: AppConfig.headers);
 

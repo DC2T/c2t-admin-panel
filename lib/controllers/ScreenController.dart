@@ -1,5 +1,5 @@
 import 'package:admin/screens/default/default.dart';
-import 'package:admin/screens/form/movie_form_page.dart';
+import 'package:admin/screens/form/modifier_form_page.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/tableMovie/table_movie_screen.dart';
 import 'package:flutter/material.dart';

@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:admin/controllers/ScreenController.dart';
+import 'package:admin/models/Movies.dart';
 
 class ActionButtons extends StatelessWidget {
-  final Movie mov;
+  final String idMovie;
   final Function reload;
   final int pageRecent;
-  const ActionButtons({Key key, this.mov, this.reload, this.pageRecent}) : super(key: key);
+  const ActionButtons({Key key, this.idMovie, this.reload, this.pageRecent})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,20 +52,28 @@ class ActionButtons extends StatelessWidget {
                               CupertinoDialogAction(
                                 child: Text('Yes'),
                                 onPressed: () {
-                                  print('delete movie with id' + mov.id);
                                   Navigator.pop(context);
-                                  showDialog(
-                                      context: context,
-                                      builder: (_) => CupertinoAlertDialog(
-                                            title: Text('Delete Success'),
-                                            actions: [
-                                              CupertinoDialogAction(
-                                                child: Text('OK'),
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                              )
-                                            ],
-                                          ));
+                                  print('delete movie with id ' + idMovie);
+                                  deleteMovie(idMovie).then((value) => {
+                                        if (value.message == 'success')
+                                          {
+                                            showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    CupertinoAlertDialog(
+                                                      title: Text(
+                                                          'Delete Success'),
+                                                      actions: [
+                                                        CupertinoDialogAction(
+                                                          child: Text('OK'),
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                        )
+                                                      ],
+                                                    ))
+                                          }
+                                      });
                                 },
                               ),
                               CupertinoDialogAction(
