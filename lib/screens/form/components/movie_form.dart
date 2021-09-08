@@ -26,29 +26,33 @@ class _MovieFormState extends State<MovieForm> {
         ),
         child: Column(
           children: [
-            Container(
-              width: screenSize.width,
-              height: 50,
-              child: TabBar(
-                indicatorColor: Colors.white,
-                tabs: [
-                  Tab(icon: Icon(Icons.movie)),
-                  Tab(icon: Icon(Icons.computer)),
-                ],
+            Expanded(
+              child: Container(
+                width: screenSize.width,
+                height: 50,
+                child: TabBar(
+                  indicatorColor: Colors.white,
+                  tabs: [
+                    Tab(icon: Icon(Icons.movie)),
+                    Tab(icon: Icon(Icons.computer)),
+                  ],
+                ),
               ),
             ),
             Divider(height: 2, color: Colors.white),
-            Container(
-              width: screenSize.width,
-              //height: screenSize.height,
-              padding: EdgeInsets.all(defaultPadding),
-              child: TabBarView(
-                children: [
-                  MovieTab(
-                    screenSize: screenSize,
-                  ),
-                  Icon(Icons.computer),
-                ],
+            Expanded(
+              child: Container(
+                width: screenSize.width,
+                // height: screenSize.height,
+                padding: EdgeInsets.all(defaultPadding),
+                child: TabBarView(
+                  children: [
+                    MovieTab(
+                      screenSize: screenSize,
+                    ),
+                    Icon(Icons.computer),
+                  ],
+                ),
               ),
             ),
           ],
