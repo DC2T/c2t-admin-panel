@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:admin/constants.dart';
 
-class ServerTab extends StatefulWidget {
+class ServerFormTab extends StatefulWidget {
 
   @override
-  _ServerTabState createState() => _ServerTabState();
+  _ServerFormTabState createState() => _ServerFormTabState();
 }
 
-class _ServerTabState extends State<ServerTab> {
+class _ServerFormTabState extends State<ServerFormTab> {
   bool obscureText = true;
   String ipAddress = "";
   String rent = "";

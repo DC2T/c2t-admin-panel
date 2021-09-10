@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 /* 
   Not allow modifier(add, edit, delete,...) in this file utils
 */
@@ -60,5 +60,18 @@ showCustomDialog(BuildContext context){
     );
   });
 }
+
+String formatDate(DateTime d){
+  return DateFormat('MM/dd/yyyy').format(d);
+}
+
+String formatTime(DateTime d){
+  return DateFormat('HH:mm').format(d);
+}
+
+String formatDateTime(DateTime d){
+  return DateFormat('MM/dd/yyyy HH:mm').format(d);
+}
+
 
 

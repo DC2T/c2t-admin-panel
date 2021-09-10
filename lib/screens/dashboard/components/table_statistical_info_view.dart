@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:admin/controllers/ScreenController.dart';
 import 'package:admin/models/RecentFile.dart';
-import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -62,9 +61,8 @@ class TableStatisticalInfoView extends StatelessWidget {
           Divider(height: 1.0),
           Container(
             padding: EdgeInsets.all(defaultPadding),
-            child: DataTable2(
+            child: DataTable(
               columnSpacing: (_size.width > 600 && _size.width < 1025)?defaultPadding * 2:defaultPadding * 4,
-              minWidth: 400.0,
               columns: [
                 DataColumn(
                   label: Text("Movie Name"),

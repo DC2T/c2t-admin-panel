@@ -1,6 +1,45 @@
 import 'package:admin/constants.dart';
 import 'package:flutter/material.dart';
 
+Widget buttonDefault(
+    {Widget leading,
+    Widget trailing,
+    String label,
+    double height,
+    Function onTap}) {
+  return GestureDetector(
+    onTap: onTap ?? null,
+    child: Container(
+      height: height ?? 50,
+      padding: EdgeInsets.all(8.0),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          border: Border.all(color: borderColor),
+          borderRadius: BorderRadius.circular(defaultBorderRadius),
+          color: secondaryColor),
+      child: ((leading != null || trailing != null) && label != null)
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                leading ?? Container(child: null),
+                Text(label),
+                trailing ?? Container(child: null),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (leading != null || trailing != null)
+                  trailing ?? leading
+                else if (label != null)
+                  Text(label)
+              ],
+            ),
+    ),
+  );
+}
+
 Widget textEditFormFill(
   BuildContext context, {
   TextEditingController controller,
@@ -84,6 +123,7 @@ class _MultiSelectInputState extends State<MultiSelectInput> {
   List<String> selectedItem = [];
   List<Widget> selected = [];
   bool showItem = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(

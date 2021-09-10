@@ -1,12 +1,9 @@
-import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:admin/utils/DBQuery.dart';
 
-class Movie {
-  static final api_uri = 'movie';
-  static Map filter_params = {
-    'per_page': 20,
-    'page': 1,
-  };
+class Worker {
+  static final api_uri = 'worker';
+  static Map filter_params = {'per_page': 20, 'page': 1, };
 
   static Future<Map<String, dynamic>> findOne(id) async {
     DBQuery dbQuery = new DBQuery(api_uri);
@@ -40,35 +37,20 @@ class Movie {
         "name": "_id",
         "label": "ID",
       },
-      "photo": {
+      "ip": {
         "type": "String",
-        "name": "photo",
-        "label": "Photo",
+        "name": "ip",
+        "label": "IP Address",
       },
-      "title": {
+      "username": {
         "type": "String",
-        "name": "title",
-        "label": "Title",
+        "name": "username",
+        "label": "User Name",
       },
-      "subTitle": {
+      "password": {
         "type": "String",
-        "name": "subTitle",
-        "label": "Sub Title",
-      },
-      "form": {
-        "type": "Boolean",
-        "name": "form",
-        "label": "Form",
-      },
-      "storyline": {
-        "type": "String",
-        "name": "storyline",
-        "label": "Storyline",
-      },
-      "views": {
-        "type": "Number",
-        "name": "views",
-        "label": "Views",
+        "name": "password",
+        "label": "Password",
       },
       "createAt": {
         "type": "Number",
@@ -83,15 +65,7 @@ class Movie {
     };
   }
 
-  static List table_columns() {
-    return [
-      '_id',
-      'photo',
-      'title',
-      'form',
-      'views',
-      'createAt',
-      'updateAt'
-    ];
+  static List table_columns(){
+    return ['_id', 'ip', 'username', 'password', 'createAt', 'updateAt'];
   }
 }

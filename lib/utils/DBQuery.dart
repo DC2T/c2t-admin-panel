@@ -12,6 +12,9 @@ class DBQuery{
     this.uri = AppConfig.server + this.uri;
   }
 
+  String getQueryString(Map params) {
+    return params.entries.map((e) => '${e.key}=${e.value}').join('&');
+  }
 
   Future findOne(id) async {
     var url = Uri.parse('${this.uri}/view?_id=${id.toString()}');
@@ -26,7 +29,7 @@ class DBQuery{
   }
 
   Future find(params) async {
-    var url = Uri.parse('${this.uri}/view?${params.toString()}');
+    var url = Uri.parse('${this.uri}/view?${getQueryString(params)}');
 
     print(url);
     var response = await http.get(url, headers: AppConfig.headers);
@@ -45,7 +48,7 @@ class DBQuery{
       post_data[key] = value.toString();
     });
     print(post_data);
-    var response = await http.post(url, body: post_data);
+    var response = await http.post(url, headers: AppConfig.headers, body: post_data);
 
     print(url);
     print(response.body);
@@ -67,7 +70,7 @@ class DBQuery{
       update_data[key] = value.toString();
     });
     print(update_data);
-    var response = await http.post(url, body: update_data);
+    var response = await http.post(url, headers: AppConfig.headers, body: update_data);
 
     print(url);
     print(response.body);
@@ -83,13 +86,14 @@ class DBQuery{
 
   Future delete(id) async {
     var url = Uri.parse('${this.uri}/delete/${id.toString()}');
-    var response = await http.delete(url);
+    var response = await http.delete(url, headers: AppConfig.headers);
 
     if (response.statusCode == 200)
       return json.decode(response.body);
 
     print('Request failed with status: ${response.statusCode}.');
   }
+
   Future<String> uploadFile(File image) async {
     var request = http.MultipartRequest('POST', Uri.parse(this.uri + '/upload'));
     request.files.add(await http.MultipartFile.fromPath('file', image.path));
@@ -100,4 +104,5 @@ class DBQuery{
 
     return '';
   }
+
 }

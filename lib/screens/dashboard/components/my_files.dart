@@ -1,5 +1,5 @@
 
-import 'package:admin/screens/form/modifier_form_page.dart';
+import 'package:admin/screens/form/modifier_page.dart';
 import 'package:admin/responsive.dart';
 import 'package:admin/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';

@@ -1,11 +1,16 @@
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:admin/utils/DBQuery.dart';
 
-class Director {
-  static final api_uri = 'director';
+class Cast {
+  static final api_uri = 'star';
   static Map filter_params = {'per_page': 20, 'page': 1, };
 
-  static Future<Map<String, dynamic>> findOne(id) async {
+  static Future<Map<String, dynamic>> fineOne(id) async {
     DBQuery dbQuery = new DBQuery(api_uri);
     return await dbQuery.findOne(id);
   }

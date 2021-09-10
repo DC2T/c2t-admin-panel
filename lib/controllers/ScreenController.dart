@@ -1,7 +1,7 @@
+import 'package:admin/screens/catalog/catalog_page.dart';
 import 'package:admin/screens/default/default.dart';
-import 'package:admin/screens/form/modifier_form_page.dart';
+import 'package:admin/screens/form/modifier_page.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
-import 'package:admin/screens/tableMovie/table_movie_screen.dart';
 import 'package:flutter/material.dart';
 
 class ScreenController extends ChangeNotifier {
@@ -17,8 +17,8 @@ class ScreenController extends ChangeNotifier {
       case 'Modifier':
         _screen = MovieFormPage();
         break;
-      case 'Movie':
-        _screen = TableMovie();
+      case 'Catalog':
+        _screen = CatalogPage();
         break;
       default:
         _screen = DefaultPage();

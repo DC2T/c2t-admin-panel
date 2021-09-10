@@ -3,13 +3,13 @@ import 'package:admin/constants.dart';
 import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:file_picker/file_picker.dart';
 
-class MovieTab extends StatefulWidget {
+class MovieFormTab extends StatefulWidget {
 
   @override
-  _MovieTabState createState() => _MovieTabState();
+  _MovieFormTabState createState() => _MovieFormTabState();
 }
 
-class _MovieTabState extends State<MovieTab> {
+class _MovieFormTabState extends State<MovieFormTab> {
   String img = '';
   String title = '';
   DateTime pickedDate;

@@ -1,5 +1,5 @@
 import 'package:admin/controllers/ScreenController.dart';
-import 'package:admin/screens/form/modifier_form_page.dart';
+import 'package:admin/screens/form/modifier_page.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -33,10 +33,10 @@ class SideMenu extends StatelessWidget {
             },
           ),
           DrawerListTile(
-            title: "Table Movie",
+            title: "Catalog",
             svgSrc: "assets/icons/menu_doc.svg",
             press: () {
-              context.read<ScreenController>().controlScreen(screenName: 'Movie');
+              context.read<ScreenController>().controlScreen(screenName: 'Catalog');
             },
           ),
           DrawerListTile(
