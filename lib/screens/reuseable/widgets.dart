@@ -1,4 +1,5 @@
 import 'package:admin/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget buttonDefault(
@@ -121,53 +122,119 @@ class MultiSelectInput extends StatefulWidget {
 
 class _MultiSelectInputState extends State<MultiSelectInput> {
   List<String> selectedItem = [];
+  List<String> searchItem = [];
   List<Widget> selected = [];
-  bool showItem = true;
-
+  String inputSearchItem = '';
+  bool showItem = false;
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 400,
         child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(defaultBorderRadius),
-              ),
-              child: ListTile(
-                title: selectedItem.isEmpty
-                    ? Row(
-                        children: selected,
-                      )
-                    : Text(""),
-                trailing: Icon(Icons.arrow_drop_down),
-                onTap: () {},
-              ),
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(defaultBorderRadius),
+          ),
+          child: ListTile(
+            title: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                      children: selected ?? Container(),
+                    ),
             ),
-            showItem
-                ? Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.only(top: 48),
-                    color: Colors.red,
-                    child: Column(
-                      children: [
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                        Text('drop box'),
-                      ],
-                    ))
-                : Container(),
-          ],
-        ));
+            trailing: Icon(Icons.arrow_drop_down),
+            onTap: () {
+              setState(() {
+                showItem = !showItem;
+              });
+            },
+          ),
+        ),
+        showItem
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(top: 48),
+                color: Colors.red,
+                child: Column(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(
+                            left: defaultPadding, top: defaultPadding / 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration.collapsed(
+                                    hintText: 'Search'),
+                                onChanged: (val) {
+                                  searchItem.clear();
+                                  for (var item in widget.items) {
+                                    if (item == val) {
+                                      searchItem.add(item);
+                                      setState(() {});
+                                    }
+                                  }
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  if (inputSearchItem != '')
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => CupertinoAlertDialog(
+                                              title: Text(
+                                                  'Sure you want add $inputSearchItem'),
+                                              actions: [
+                                                CupertinoDialogAction(
+                                                    child: Text('YES'),
+                                                    onPressed: () {
+                                                      print('added an item');
+                                                      Navigator.pop(context);
+                                                    }),
+                                                CupertinoDialogAction(
+                                                    child: Text('NO'),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    })
+                                              ],
+                                            ));
+                                }),
+                          ],
+                        )),
+                    Divider(),
+                    ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: searchItem.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(searchItem[index]),
+                            onTap: () {
+                              selectedItem.add(searchItem[index]);
+                              selected.add(Container(
+                                color: Colors.green, 
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: defaultPadding/2, 
+                                  vertical: defaultPadding/3
+                                ), 
+                                margin: EdgeInsets.only(right: defaultPadding/3), 
+                                child: Text(searchItem[index])));
+                              setState(() {});
+                            },
+                          );
+                        }),
+                  ],
+                ))
+            : SizedBox.shrink(),
+      ],
+    ));
   }
 }

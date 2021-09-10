@@ -38,7 +38,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   child: GestureDetector(
                     child: Container(
                       width: screenSize.width,
-                      height: screenSize.height * 0.7,
+                      height: screenSize.height * 0.5,
                       margin: EdgeInsets.only(right: defaultPadding),
                       decoration: BoxDecoration(
                           color: bgColor,
@@ -63,7 +63,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   flex: 3,
                   child: Container(
                     width: screenSize.width,
-                    height: screenSize.height,
+                    height: MediaQuery.of(context).size.height,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
