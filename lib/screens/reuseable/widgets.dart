@@ -13,28 +13,27 @@ Widget buttonDefault(
     child: Container(
       height: height ?? 50,
       padding: EdgeInsets.all(8.0),
-      alignment: Alignment.center,
       decoration: BoxDecoration(
           border: Border.all(color: borderColor),
           borderRadius: BorderRadius.circular(defaultBorderRadius),
           color: secondaryColor),
       child: ((leading != null || trailing != null) && label != null)
           ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 leading ?? Container(child: null),
-                Text(label),
+                Center(child: Text(label)),
                 trailing ?? Container(child: null),
               ],
             )
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (leading != null || trailing != null)
-                  trailing ?? leading
+                  Center(child: trailing ?? leading)
                 else if (label != null)
-                  Text(label)
+                  Center(child: Text(label))
               ],
             ),
     ),
@@ -126,6 +125,7 @@ class _MultiSelectInputState extends State<MultiSelectInput> {
   List<Widget> selected = [];
   String inputSearchItem = '';
   bool showItem = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -140,8 +140,8 @@ class _MultiSelectInputState extends State<MultiSelectInput> {
             title: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                      children: selected ?? Container(),
-                    ),
+                children: selected ?? Container(),
+              ),
             ),
             trailing: Icon(Icons.arrow_drop_down),
             onTap: () {
@@ -220,13 +220,13 @@ class _MultiSelectInputState extends State<MultiSelectInput> {
                             onTap: () {
                               selectedItem.add(searchItem[index]);
                               selected.add(Container(
-                                color: Colors.green, 
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: defaultPadding/2, 
-                                  vertical: defaultPadding/3
-                                ), 
-                                margin: EdgeInsets.only(right: defaultPadding/3), 
-                                child: Text(searchItem[index])));
+                                  color: Colors.green,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: defaultPadding / 2,
+                                      vertical: defaultPadding / 3),
+                                  margin: EdgeInsets.only(
+                                      right: defaultPadding / 3),
+                                  child: Text(searchItem[index])));
                               setState(() {});
                             },
                           );

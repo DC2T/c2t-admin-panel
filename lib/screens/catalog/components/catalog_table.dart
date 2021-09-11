@@ -6,31 +6,38 @@ import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
 class CatalogTable extends StatefulWidget {
-  String Model;
+  Map<String, dynamic> data;
+  Map<String, dynamic> columns;
+  List table_columns;
 
-  CatalogTable(this.Model);
+  CatalogTable({this.table_columns, this.columns, this.data});
 
   @override
   _CatalogTableState createState() => _CatalogTableState();
 }
 
 class _CatalogTableState extends State<CatalogTable> {
-  bool loading = true;
   var page;
   var perPage;
   var totalRows;
-
-  var table_columns = Movie.table_columns();
-  var columns = Movie.columns();
+  bool loading = true;
 
   List rows;
-  var data;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _fetchData();
+    if(widget.data!=null){
+      // print(widget.data.toString());
+      totalRows = widget.data['totalRows'];
+      rows = widget.data['data'];
+      page = widget.data['page'];
+      print(rows.length);
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   @override
@@ -39,52 +46,27 @@ class _CatalogTableState extends State<CatalogTable> {
     super.dispose();
   }
 
-  Future _fetchData() async {
-    switch (widget.Model) {
-      case 'Movie':
-        table_columns = Movie.table_columns();
-        columns = Movie.columns();
-        data = (await Movie.find())['data'];
-        break;
-      case 'Worker':
-        table_columns = Worker.table_columns();
-        columns = Worker.columns();
-        data = (await Worker.find())['data'];
-        break;
-      default:
-        break;
-    }
-    page = data['page'];
-    totalRows = data['totalRows'];
-    rows = data['data'];
-    print(rows.length);
-    setState(() {
-      loading = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: !loading
-          ? SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: _dataColumn(),
-                rows: _dataRow(),
-              ),
-            )
-          : Center(child: CircularProgressIndicator()),
-    );
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: !loading
+            ? SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columns: _dataColumn(),
+                  rows: _dataRow(),
+                ),
+              )
+            : Center(child: CircularProgressIndicator()));
   }
 
   _dataColumn() {
-    return table_columns.map((column) {
-      if (columns[column]['name'] == column) {
+    return widget.table_columns.map((column) {
+      if (widget.columns[column]['name'] == column) {
         return DataColumn(
-          label: Text(columns[column]['label']),
+          label: Text(widget.columns[column]['label']),
         );
       }
     }).toList();
@@ -93,8 +75,8 @@ class _CatalogTableState extends State<CatalogTable> {
   _dataRow() {
     return rows
         .map((row) => DataRow(
-              cells: table_columns.map((column) {
-                if (columns[column]['name'] == 'photo') {
+              cells: widget.table_columns.map((column) {
+                if (widget.columns[column]['name'] == 'photo') {
                   return DataCell(
                     Container(
                       width: 40,
@@ -120,13 +102,13 @@ class _CatalogTableState extends State<CatalogTable> {
                       // child: Image.network(row[column].toString()),
                     ),
                   );
-                } else if (columns[column]['name'] == 'form') {
+                } else if (widget.columns[column]['name'] == 'form') {
                   return DataCell(
                     Text(row[column] ? 'Series' : 'Odds'),
                   );
                 } else if (['createAt', 'updateAt']
                     .toList()
-                    .contains(columns[column]['name'])) {
+                    .contains(widget.columns[column]['name'])) {
                   DateTime date = new DateTime.fromMillisecondsSinceEpoch(
                       int.parse(row[column].toString()));
                   return DataCell(
