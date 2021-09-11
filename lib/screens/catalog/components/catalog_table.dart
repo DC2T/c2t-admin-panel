@@ -1,26 +1,31 @@
 import 'package:admin/constants.dart';
 import 'package:admin/models/Movies.dart';
 import 'package:admin/models/Worker.dart';
+import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
 class CatalogTable extends StatefulWidget {
-  Map<String, dynamic> data;
-  Map<String, dynamic> columns;
-  List table_columns;
+  String table;
 
-  CatalogTable({this.table_columns, this.columns, this.data});
+  CatalogTable({this.table});
 
   @override
   _CatalogTableState createState() => _CatalogTableState();
 }
 
 class _CatalogTableState extends State<CatalogTable> {
-  var page;
-  var perPage;
+  int page = 1;
+  int perPage = 20;
+
   var totalRows;
   bool loading = true;
+
+  var table_columns;
+  var columns;
+
+  var data;
 
   List rows;
 
@@ -28,16 +33,6 @@ class _CatalogTableState extends State<CatalogTable> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.data!=null){
-      // print(widget.data.toString());
-      totalRows = widget.data['totalRows'];
-      rows = widget.data['data'];
-      page = widget.data['page'];
-      print(rows.length);
-      setState(() {
-        loading = false;
-      });
-    }
   }
 
   @override
@@ -46,37 +41,111 @@ class _CatalogTableState extends State<CatalogTable> {
     super.dispose();
   }
 
+  _fetchData() async {
+    switch (widget.table) {
+      case 'Movie':
+        table_columns = Movie.table_columns();
+        columns = Movie.columns();
+        Movie.filter_params['page'] = page;
+        data = (await Movie.find())['data'];
+        break;
+      case 'Worker':
+        table_columns = Worker.table_columns();
+        columns = Worker.columns();
+        Worker.filter_params['page'] = page;
+        data = (await Worker.find())['data'];
+        break;
+      default:
+        break;
+    }
+    totalRows = data['totalRows'];
+    rows = data['data'];
+
+    // print(rows.length);
+    // setState(() {
+    //   loading = false;
+    // });
+    return rows;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: !loading
-            ? SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columns: _dataColumn(),
-                  rows: _dataRow(),
+    return Stack(
+      children: [
+        Positioned(
+          bottom: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child: Container(
+            height: 50.0,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(defaultBorderRadius)),
+                color: secondaryColor),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                buttonDefault(
+                    label: 'Pre',
+                    leading: Icon(Icons.arrow_back_ios),
+                    onTap: _preNav),
+                SizedBox(
+                  width: defaultPadding,
                 ),
-              )
-            : Center(child: CircularProgressIndicator()));
+                buttonDefault(
+                    label: 'Next',
+                    trailing: Icon(Icons.arrow_forward_ios),
+                    onTap: _nextNav),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: defaultPadding + 50,
+          top: defaultPadding,
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: FutureBuilder(
+                future: _fetchData(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                      child: DataTable(
+                        columns: _dataColumn(),
+                        rows: _dataRow(snapshot.data),
+                      ),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                }),
+          ),
+        ),
+      ],
+    );
   }
 
   _dataColumn() {
-    return widget.table_columns.map((column) {
-      if (widget.columns[column]['name'] == column) {
+    return table_columns.map<DataColumn>((column) {
+      if (columns[column]['name'] == column) {
         return DataColumn(
-          label: Text(widget.columns[column]['label']),
+          label: Text(columns[column]['label']),
         );
       }
     }).toList();
   }
 
-  _dataRow() {
+  _dataRow(rows) {
     return rows
-        .map((row) => DataRow(
-              cells: widget.table_columns.map((column) {
-                if (widget.columns[column]['name'] == 'photo') {
+        .map<DataRow>((row) => DataRow(
+              onSelectChanged: (value){
+                  _miniShowDetail(row);
+              },
+              cells: table_columns.map<DataCell>((column) {
+                if (columns[column]['name'] == 'photo') {
                   return DataCell(
                     Container(
                       width: 40,
@@ -102,13 +171,13 @@ class _CatalogTableState extends State<CatalogTable> {
                       // child: Image.network(row[column].toString()),
                     ),
                   );
-                } else if (widget.columns[column]['name'] == 'form') {
+                } else if (columns[column]['name'] == 'form') {
                   return DataCell(
                     Text(row[column] ? 'Series' : 'Odds'),
                   );
                 } else if (['createAt', 'updateAt']
                     .toList()
-                    .contains(widget.columns[column]['name'])) {
+                    .contains(columns[column]['name'])) {
                   DateTime date = new DateTime.fromMillisecondsSinceEpoch(
                       int.parse(row[column].toString()));
                   return DataCell(
@@ -122,5 +191,30 @@ class _CatalogTableState extends State<CatalogTable> {
               }).toList(),
             ))
         .toList();
+  }
+
+  _miniShowDetail(data){
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text(data['_id'].toString()),
+        content: Container(
+          child: null,
+        ),
+      );
+    });
+  }
+
+  _preNav() {
+    if (page >= 1) {
+      page -= 1;
+      setState(() {});
+    }
+  }
+
+  _nextNav() {
+    if (page < (totalRows / perPage).ceil()) {
+      page += 1;
+      setState(() {});
+    }
   }
 }
