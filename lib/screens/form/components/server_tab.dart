@@ -3,6 +3,9 @@ import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:admin/constants.dart';
 
 class ServerFormTab extends StatefulWidget {
+  var data;
+
+  ServerFormTab({this.data});
 
   @override
   _ServerFormTabState createState() => _ServerFormTabState();
@@ -10,10 +13,22 @@ class ServerFormTab extends StatefulWidget {
 
 class _ServerFormTabState extends State<ServerFormTab> {
   bool obscureText = true;
-  String ipAddress = "";
-  String rent = "";
-  String username = "";
-  String password = "";
+  TextEditingController txtIP = TextEditingController();
+  TextEditingController txtUserName = TextEditingController();
+  TextEditingController txtPassWord = TextEditingController();
+  TextEditingController txtRent = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.data != null) {
+      txtIP.text = widget.data['ip'];
+      txtUserName.text = widget.data['username'];
+      txtPassWord.text = widget.data['password'];
+      txtRent.text = widget.data['rent'];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +42,12 @@ class _ServerFormTabState extends State<ServerFormTab> {
           children: [
             Expanded(
               flex: 2,
-              child: textEditFormFill(context,
-                  color: Colors.white,
-                  labelText: 'IP ADDRESS',
-                  backgroundColor: bgColor, 
-                  onChange: (value) {
-                    setState(() {
-                      ipAddress = value;
-                    });
-                  },
+              child: textEditFormFill(
+                context,
+                controller: txtIP,
+                color: Colors.white,
+                labelText: 'IP ADDRESS',
+                backgroundColor: bgColor,
               ),
             ),
             SizedBox(width: defaultPadding),
@@ -43,14 +55,10 @@ class _ServerFormTabState extends State<ServerFormTab> {
               flex: 2,
               child: textEditFormFill(
                 context,
+                controller: txtRent,
                 color: Colors.white,
                 labelText: 'RENT',
                 backgroundColor: bgColor,
-                onChange: (value) {
-                  setState(() {
-                    rent = value;
-                  });
-                },
               ),
             )
           ],
@@ -62,79 +70,35 @@ class _ServerFormTabState extends State<ServerFormTab> {
               flex: 2,
               child: textEditFormFill(
                 context,
+                controller: txtUserName,
                 color: Colors.white,
                 labelText: 'USER NAME',
                 backgroundColor: bgColor,
-                onChange: (value) {
-                  setState(() {
-                    username = value;
-                  });
-                },
               ),
             ),
             SizedBox(width: defaultPadding),
             Expanded(
               flex: 2,
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'PASSWORD',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              obscureText = !obscureText;
-                            });
-                          },
-                          child: Text(
-                            obscureText ? 'SHOW' : 'HIDE',
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 48,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    decoration: BoxDecoration(
-                        color: bgColor,
-                        borderRadius:
-                            BorderRadius.circular(defaultBorderRadius)),
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          password = value;
-                        });
-                      },
-                      obscureText: obscureText,
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
+              child: textEditFormFill(context,
+                  controller: txtPassWord,
+                  color: Colors.white,
+                  labelText: 'PASSWORD',
+                  backgroundColor: bgColor,
+                  maxLine: 1,
+                  obscureText: obscureText,
+                  suffixIcon: buttonDefault(
+                    width: 30,
+                    height: 30,
+                    onTap: () {
+                      setState(() {
+                        obscureText = !obscureText;
+                      });
+                    },
+                    leading: obscureText
+                        ? Icon(Icons.visibility, size: 14,)
+                        : Icon(Icons.visibility_off, size: 14,)
+                  )),
+            ),
           ],
         ),
         SizedBox(height: defaultPadding),
@@ -143,16 +107,15 @@ class _ServerFormTabState extends State<ServerFormTab> {
           child: Center(
             child: TextButton(
               onPressed: () {},
-              child: Text(
-                'SUBMIT',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                )
-              ),
+              child: Text('SUBMIT',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  )),
               style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
               ),
             ),

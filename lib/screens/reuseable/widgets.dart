@@ -6,11 +6,13 @@ Widget buttonDefault(
     {Widget leading,
     Widget trailing,
     String label,
+    double width,
     double height,
     Function onTap}) {
   return GestureDetector(
     onTap: onTap ?? null,
     child: Container(
+      width: width ?? 50,
       height: height ?? 50,
       padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -43,18 +45,19 @@ Widget buttonDefault(
 Widget textEditFormFill(
   BuildContext context, {
   TextEditingController controller,
+  String initValue,
   double height,
   double width,
   String hintText,
   String labelText,
   String helperText,
-  IconData suffixIcon,
+  bool obscureText = true,
+  Widget suffixIcon,
   Color color,
   Color backgroundColor,
   Function onTap,
-  Function onChange,
+  int maxLine = 100,
   bool readOnly = false,
-  expands = false,
 }) {
   return Container(
     child: Column(
@@ -79,26 +82,23 @@ Widget textEditFormFill(
               color: backgroundColor ?? secondaryColor,
               borderRadius: BorderRadius.circular(defaultBorderRadius)),
           child: TextFormField(
+            initialValue: initValue,
             readOnly: readOnly,
             onTap: onTap,
-            onChanged: (value) {
-              onChange(value);
-            },
             controller: controller,
             cursorColor: Colors.white,
+            obscureText: !obscureText,
             style: TextStyle(fontSize: 14.0),
-            minLines: expands ? null : 1,
-            maxLines: expands ? null : 100,
-            expands: expands,
+            minLines: 1,
+            maxLines: maxLine,
             decoration: InputDecoration(
-              hintText: hintText ?? '',
-              helperText: helperText,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              suffixIcon: suffixIcon != null ? Icon(suffixIcon) : null,
-            ),
+                hintText: hintText ?? '',
+                helperText: helperText,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                suffixIcon: suffixIcon),
           ),
         ),
       ],
