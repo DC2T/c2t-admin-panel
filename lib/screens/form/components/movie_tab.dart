@@ -5,7 +5,9 @@ import 'package:file_picker/file_picker.dart';
 
 class MovieFormTab extends StatefulWidget {
   var data;
+
   MovieFormTab({this.data});
+
   @override
   _MovieFormTabState createState() => _MovieFormTabState();
 }
@@ -25,7 +27,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
   void initState() {
     super.initState();
     pickedDate = DateTime.now();
-    if(widget.data!=null){
+    if (widget.data != null) {
       txtTitle.text = widget.data['title'];
       txtSubTitle.text = widget.data['subTitle'];
       txtStoryLine.text = widget.data['storyline'];
@@ -110,8 +112,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                           SizedBox(
                             height: defaultPadding,
                           ),
-                          textEditFormFill(
-                              context,
+                          textEditFormFill(context,
                               controller: txtStoryLine,
                               labelText: 'STORY LINE',
                               height: 150,
@@ -157,7 +158,6 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                   backgroundColor: bgColor,
                                 ),
                               ),
-
                             ],
                           ),
                           SizedBox(
@@ -172,14 +172,15 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                     child: Column(
                                       children: [
                                         Container(
-                                          width: MediaQuery.of(context).size.width,
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           child: Text(
-                                              "RELEASE DATE",
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
+                                            "RELEASE DATE",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Colors.white,
                                             ),
+                                          ),
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
@@ -190,7 +191,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                           child: ListTile(
                                             title: Text(
                                                 "${pickedDate.day} - ${pickedDate.month} - ${pickedDate.year}"),
-                                            trailing: Icon(Icons.arrow_drop_down),
+                                            trailing:
+                                                Icon(Icons.arrow_drop_down),
                                             onTap: _pickDate,
                                           ),
                                         ),
@@ -227,12 +229,16 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   )
                 ],
               ),
-              SizedBox(height: defaultPadding,),
+              SizedBox(
+                height: defaultPadding,
+              ),
               Row(
                 children: [
                   Expanded(
                     flex: 3,
-                    child: MultiSelectInput(items: ["hehe", "haha"],),
+                    child: MultiSelectInput(
+                      items: ["hehe", "haha"],
+                    ),
                   ),
                   SizedBox(width: defaultPadding),
                 ],

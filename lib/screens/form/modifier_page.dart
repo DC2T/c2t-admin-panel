@@ -38,7 +38,7 @@ class _ModifierPageState extends State<ModifierPage> {
         child: Column(
           children: [
             Header(
-              title: 'Modifier Movie',
+              title: 'Modifier',
             ),
             SizedBox(height: defaultPadding),
             DefaultTabController(
