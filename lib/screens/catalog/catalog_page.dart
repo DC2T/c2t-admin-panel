@@ -4,6 +4,7 @@ import 'package:admin/models/Worker.dart';
 import 'package:admin/screens/catalog/components/catalog_table.dart';
 import 'package:admin/screens/reuseable/header.dart';
 import 'package:admin/screens/reuseable/widgets.dart';
+import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
 
 class CatalogPage extends StatefulWidget {
@@ -11,19 +12,13 @@ class CatalogPage extends StatefulWidget {
   _CatalogPageState createState() => _CatalogPageState();
 }
 
-class _CatalogPageState extends State<CatalogPage>
-    with SingleTickerProviderStateMixin {
+class _CatalogPageState extends State<CatalogPage>{
   int tabIndex = 0;
 
   var table_columns;
   var columns;
 
   var data;
-
-  final List<Map<String, dynamic>> tables = <Map<String, dynamic>>[
-    {'name': 'Movie', 'icon': Icon(Icons.movie_creation_outlined)},
-    {'name': 'Worker', 'icon': Icon(Icons.cloud_outlined)}
-  ];
 
   @override
   void initState() {
@@ -54,6 +49,7 @@ class _CatalogPageState extends State<CatalogPage>
               child: Builder(builder: (context) {
                 TabController tabController =
                     DefaultTabController.of(context);
+                tabController.animation;
                 tabController.addListener(() {
                   if (!tabController.indexIsChanging) {
                     // Your code goes here.

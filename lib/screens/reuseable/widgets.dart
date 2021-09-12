@@ -43,6 +43,7 @@ Widget buttonDefault(
 Widget textEditFormFill(
   BuildContext context, {
   TextEditingController controller,
+  String initValue,
   double height,
   double width,
   String hintText,
@@ -79,6 +80,7 @@ Widget textEditFormFill(
               color: backgroundColor ?? secondaryColor,
               borderRadius: BorderRadius.circular(defaultBorderRadius)),
           child: TextFormField(
+            initialValue: initValue??'',
             readOnly: readOnly,
             onTap: onTap,
             onChanged: (value) {

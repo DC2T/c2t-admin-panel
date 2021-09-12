@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 /* 
   Not allow modifier(add, edit, delete,...) in this file utils
 */
-
-Widget viewItem() {
-  return Container(child: null);
-}
+final List<Map<String, dynamic>> tables = <Map<String, dynamic>>[
+  {'name': 'Movie', 'icon': Icon(Icons.movie_creation_outlined)},
+  {'name': 'Worker', 'icon': Icon(Icons.cloud_outlined)}
+];
 
 showCustomDialog(BuildContext context){
   final _formKey = GlobalKey<FormState>();

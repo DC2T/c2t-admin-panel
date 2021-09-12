@@ -1,10 +1,12 @@
 import 'package:admin/constants.dart';
+import 'package:admin/controllers/ScreenController.dart';
 import 'package:admin/models/Movies.dart';
 import 'package:admin/models/Worker.dart';
 import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
+import 'package:provider/provider.dart';
 
 class CatalogTable extends StatefulWidget {
   String table;
@@ -18,7 +20,7 @@ class CatalogTable extends StatefulWidget {
 class _CatalogTableState extends State<CatalogTable> {
   int page = 1;
   int perPage = 20;
-
+  int pages = 1;
   var totalRows;
   bool loading = true;
 
@@ -59,6 +61,7 @@ class _CatalogTableState extends State<CatalogTable> {
         break;
     }
     totalRows = data['totalRows'];
+    pages = (totalRows / perPage).ceil();
     rows = data['data'];
 
     // print(rows.length);
@@ -105,6 +108,8 @@ class _CatalogTableState extends State<CatalogTable> {
         Positioned(
           bottom: defaultPadding + 50,
           top: defaultPadding,
+          left: 0.0,
+          right: 0.0,
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -113,9 +118,14 @@ class _CatalogTableState extends State<CatalogTable> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return SingleChildScrollView(
-                      child: DataTable(
-                        columns: _dataColumn(),
-                        rows: _dataRow(snapshot.data),
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          showCheckboxColumn: false,
+                          columns: _dataColumn(),
+                          rows: _dataRow(snapshot.data),
+                        ),
                       ),
                     );
                   } else {
@@ -141,8 +151,8 @@ class _CatalogTableState extends State<CatalogTable> {
   _dataRow(rows) {
     return rows
         .map<DataRow>((row) => DataRow(
-              onSelectChanged: (value){
-                  _miniShowDetail(row);
+              onSelectChanged: (value) {
+                _miniShowDetail(row);
               },
               cells: table_columns.map<DataCell>((column) {
                 if (columns[column]['name'] == 'photo') {
@@ -193,15 +203,121 @@ class _CatalogTableState extends State<CatalogTable> {
         .toList();
   }
 
-  _miniShowDetail(data){
-    showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        title: Text(data['_id'].toString()),
-        content: Container(
-          child: null,
-        ),
-      );
-    });
+  _miniShowDetail(data) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('ID: ${data['_id'].toString()}'),
+            content: Container(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: Stack(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // image
+                      data['photo'] != null
+                          ? Container(
+                              width: (MediaQuery.of(context).size.width * 0.3) *
+                                  0.3,
+                              height:
+                                  (MediaQuery.of(context).size.height * 0.5) *
+                                      0.4,
+                              child: ProgressiveImage(
+                                placeholder:
+                                    AssetImage('assets/images/placeholder.jpg'),
+                                // size: 1.87KB
+                                thumbnail: NetworkImage(
+                                    data['photo'].toString(),
+                                    scale: 0.3),
+                                // size: 1.29MB
+                                image: NetworkImage(data['photo'].toString()),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                fadeDuration: const Duration(milliseconds: 500),
+                                fit: BoxFit.cover,
+                              ))
+                          : Container(child: null),
+                      SizedBox(
+                        width: data['photo'] != null? defaultPadding: 0.0,
+                      ),
+                      // name, title
+                      Expanded(
+                        child: Column(
+                          children: [
+                            textEditFormFill(
+                              context,
+                              color: Colors.white,
+                              labelText: 'Name',
+                              backgroundColor: bgColor,
+                              initValue: '${data['name'] ?? data['title'] ?? data['ip']}',
+                              expands: true,
+                              readOnly: true,
+                            ),
+                            (data['views'] !=null || data['pointVoted'] !=null)?Container(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    child: Expanded(
+                                      child: textEditFormFill(
+                                        context,
+                                        color: Colors.white,
+                                        labelText: 'Views',
+                                        backgroundColor: bgColor,
+                                        initValue: '${data['views'].toString()}',
+                                        expands: true,
+                                        readOnly: true,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: defaultPadding
+                                  ),
+                                  Container(
+                                    child: Expanded(
+                                      child: textEditFormFill(
+                                        context,
+                                        color: Colors.white,
+                                        labelText: 'Votes',
+                                        backgroundColor: bgColor,
+                                        initValue: '${data['pointVotes'].toString()}',
+                                        expands: true,
+                                        readOnly: true,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ): Container(child: null),
+                          ],
+                        ),
+                      ),//     'Name: ${data['name'] ?? data['title'] ?? data['ip']}'))
+                    ],
+                  ),
+                  Positioned(
+                    right: 0.0,
+                    bottom: defaultPadding,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        buttonDefault(leading: Icon(Icons.edit), onTap: () {
+                          Navigator.pop(context);
+                          context.read<ScreenController>().controlScreen(screenName: 'Modifier', modifier: widget.table);
+                        }),
+                        SizedBox(
+                            width: defaultPadding
+                        ),
+                        buttonDefault(leading: Icon(Icons.delete)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   _preNav() {
@@ -212,7 +328,7 @@ class _CatalogTableState extends State<CatalogTable> {
   }
 
   _nextNav() {
-    if (page < (totalRows / perPage).ceil()) {
+    if (page < pages) {
       page += 1;
       setState(() {});
     }
