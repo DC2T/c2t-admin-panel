@@ -3,6 +3,8 @@ import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:admin/constants.dart';
 
 class ServerFormTab extends StatefulWidget {
+  var data;
+  ServerFormTab({this.data});
 
   @override
   _ServerFormTabState createState() => _ServerFormTabState();
@@ -30,7 +32,8 @@ class _ServerFormTabState extends State<ServerFormTab> {
               child: textEditFormFill(context,
                   color: Colors.white,
                   labelText: 'IP ADDRESS',
-                  backgroundColor: bgColor, 
+                  backgroundColor: bgColor,
+                  initValue: widget.data!=null? widget.data['ip']: '',
                   onChange: (value) {
                     setState(() {
                       ipAddress = value;

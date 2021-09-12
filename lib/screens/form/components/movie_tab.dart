@@ -4,7 +4,8 @@ import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:file_picker/file_picker.dart';
 
 class MovieFormTab extends StatefulWidget {
-
+  var data;
+  MovieFormTab({this.data});
   @override
   _MovieFormTabState createState() => _MovieFormTabState();
 }
@@ -77,6 +78,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 color: Colors.white,
                                 labelText: 'TITLE',
                                 backgroundColor: bgColor,
+                                initValue: widget.data!=null? widget.data['title']: ''
                               ),
                             ),
                             SizedBox(

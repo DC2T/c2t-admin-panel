@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class ModifierPage extends StatefulWidget {
   String tabName;
-  ModifierPage({this.tabName});
+  var data;
+  ModifierPage({this.tabName, this.data});
 
   @override
   _ModifierPageState createState() => _ModifierPageState();
@@ -78,8 +79,8 @@ class _ModifierPageState extends State<ModifierPage> {
                           width: screenSize.width,
                           height: screenSize.height,
                           child: TabBarView(children: [
-                            MovieFormTab(),
-                            ServerFormTab(),
+                            MovieFormTab(data: widget.tabName == 'Movie' ?widget.data:null,),
+                            ServerFormTab(data: widget.tabName == 'Worker' ?widget.data:null,),
                           ]),
                         ),
                       ],

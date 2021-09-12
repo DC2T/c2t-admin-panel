@@ -304,7 +304,7 @@ class _CatalogTableState extends State<CatalogTable> {
                       children: [
                         buttonDefault(leading: Icon(Icons.edit), onTap: () {
                           Navigator.pop(context);
-                          context.read<ScreenController>().controlScreen(screenName: 'Modifier', modifier: widget.table);
+                          context.read<ScreenController>().controlScreen(screenName: 'Modifier', modifier: widget.table, data: data);
                         }),
                         SizedBox(
                             width: defaultPadding

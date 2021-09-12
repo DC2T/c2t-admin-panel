@@ -8,14 +8,14 @@ class ScreenController extends ChangeNotifier {
   StatefulWidget _screen = DashboardScreen();
   StatefulWidget get screen => _screen;
 
-  void controlScreen({screenName = 'Dashboard', modifier: 'Movie'}) {
+  void controlScreen({screenName = 'Dashboard', modifier: 'Movie', data}) {
     print(screenName);
     switch (screenName) {
       case 'Dashboard':
         _screen = DashboardScreen();
         break;
       case 'Modifier':
-        _screen = ModifierPage(tabName: modifier,);
+        _screen = ModifierPage(tabName: modifier, data: data,);
         break;
       case 'Catalog':
         _screen = CatalogPage();
