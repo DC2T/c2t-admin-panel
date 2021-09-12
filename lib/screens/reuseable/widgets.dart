@@ -53,7 +53,6 @@ Widget textEditFormFill(
   Color color,
   Color backgroundColor,
   Function onTap,
-  Function onChange,
   bool readOnly = false,
   expands = false,
 }) {
@@ -80,12 +79,9 @@ Widget textEditFormFill(
               color: backgroundColor ?? secondaryColor,
               borderRadius: BorderRadius.circular(defaultBorderRadius)),
           child: TextFormField(
-            initialValue: initValue??'',
+            initialValue: initValue,
             readOnly: readOnly,
             onTap: onTap,
-            onChanged: (value) {
-              onChange(value);
-            },
             controller: controller,
             cursorColor: Colors.white,
             style: TextStyle(fontSize: 14.0),

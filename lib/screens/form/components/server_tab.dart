@@ -34,11 +34,6 @@ class _ServerFormTabState extends State<ServerFormTab> {
                   labelText: 'IP ADDRESS',
                   backgroundColor: bgColor,
                   initValue: widget.data!=null? widget.data['ip']: '',
-                  onChange: (value) {
-                    setState(() {
-                      ipAddress = value;
-                    });
-                  },
               ),
             ),
             SizedBox(width: defaultPadding),
@@ -49,11 +44,6 @@ class _ServerFormTabState extends State<ServerFormTab> {
                 color: Colors.white,
                 labelText: 'RENT',
                 backgroundColor: bgColor,
-                onChange: (value) {
-                  setState(() {
-                    rent = value;
-                  });
-                },
               ),
             )
           ],
@@ -68,11 +58,6 @@ class _ServerFormTabState extends State<ServerFormTab> {
                 color: Colors.white,
                 labelText: 'USER NAME',
                 backgroundColor: bgColor,
-                onChange: (value) {
-                  setState(() {
-                    username = value;
-                  });
-                },
               ),
             ),
             SizedBox(width: defaultPadding),
