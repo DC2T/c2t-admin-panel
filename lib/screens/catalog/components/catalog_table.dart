@@ -345,6 +345,7 @@ class _CatalogTableState extends State<CatalogTable> {
                                   screenName: 'Modifier',
                                   modifier: widget.table,
                                   data: data);
+                              print(data);
                             }),
                         SizedBox(width: defaultPadding),
                         buttonDefault(leading: Icon(Icons.delete)),
