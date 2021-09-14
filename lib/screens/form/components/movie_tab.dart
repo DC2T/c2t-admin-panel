@@ -1,3 +1,4 @@
+import 'package:admin/screens/reuseable/text_form_search.dart';
 import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:admin/constants.dart';
@@ -30,6 +31,10 @@ class _MovieFormTabState extends State<MovieFormTab> {
   TextEditingController txtReleaseYear = TextEditingController();
   TextEditingController txtFrom = TextEditingController();
   TextEditingController txtForm = TextEditingController();
+  TextEditingController txtCategories= TextEditingController();
+  TextEditingController txtCountries = TextEditingController();
+  TextEditingController txtDirectors = TextEditingController();
+  TextEditingController txtLanguages = TextEditingController();
 
   final _multiSelectKey = GlobalKey<FormFieldState>();
 
@@ -57,10 +62,12 @@ class _MovieFormTabState extends State<MovieFormTab> {
 
     return Container(
         width: screenSize.width,
-        height: MediaQuery.of(context).size.height,
+        height: screenSize.height,
         padding: EdgeInsets.all(defaultPadding),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,12 +100,12 @@ class _MovieFormTabState extends State<MovieFormTab> {
                         ),
                         Container(
                           margin: EdgeInsets.only(right: defaultPadding, top: defaultPadding),
-                          child: textEditFormFill(
-                            context,
+                          child: TextEditFormFill(
                             color: Colors.white,
                             labelText: 'Form',
                             backgroundColor: bgColor,
-                            controller: txtForm,
+                            readOnly: true,
+                            isDropdownBox: true,
                           ),
                         ),
                       ],
@@ -108,7 +115,6 @@ class _MovieFormTabState extends State<MovieFormTab> {
                     flex: 3,
                     child: Container(
                       width: screenSize.width,
-                      height: MediaQuery.of(context).size.height,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -267,11 +273,54 @@ class _MovieFormTabState extends State<MovieFormTab> {
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
-              SizedBox(height: defaultPadding,),
-              SizedBox(height: defaultPadding,),
+              SizedBox(
+                height: defaultPadding,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: TextEditFormFill(
+                      color: Colors.white,
+                      labelText: 'Categories',
+                      backgroundColor: bgColor,
+                    ),
+                  ),
+                  SizedBox(
+                    width: defaultPadding,
+                  ),
+                  Expanded(
+                    child: TextEditFormFill(
+                      color: Colors.white,
+                      labelText: 'Directors',
+                      backgroundColor: bgColor,
+                    ),
+                  ),
+                  SizedBox(
+                    width: defaultPadding,
+                  ),
+                  Expanded(
+                    child: TextEditFormFill(
+                      color: Colors.white,
+                      labelText: 'Languages',
+                      backgroundColor: bgColor,
+                    ),
+                  ),
+                  SizedBox(
+                    width: defaultPadding,
+                  ),
+                  Expanded(
+                    child: TextEditFormFill(
+                      color: Colors.white,
+                      labelText: 'Countries',
+                      backgroundColor: bgColor,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ));

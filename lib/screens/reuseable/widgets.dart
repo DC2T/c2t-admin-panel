@@ -55,7 +55,7 @@ Widget textEditFormFill(
   bool obscureText = true,
   Widget suffixIcon,
   Color color,
-  Color backgroundColor,
+  Color backgroundColor = secondaryColor,
   Function onTap,
   int maxLine = 100,
   bool readOnly = false,
@@ -80,7 +80,7 @@ Widget textEditFormFill(
           // width: width ?? MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           decoration: BoxDecoration(
-              color: backgroundColor ?? secondaryColor,
+              color: backgroundColor,
               borderRadius: BorderRadius.circular(defaultBorderRadius)),
           child: TextFormField(
             initialValue: initValue,
