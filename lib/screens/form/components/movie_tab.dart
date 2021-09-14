@@ -1,3 +1,4 @@
+import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:admin/constants.dart';
 import 'package:admin/screens/reuseable/widgets.dart';
@@ -21,6 +22,14 @@ class _MovieFormTabState extends State<MovieFormTab> {
   TextEditingController txtSubTitle = TextEditingController();
   TextEditingController txtStoryLine = TextEditingController();
   TextEditingController txtTrailer = TextEditingController();
+  TextEditingController txtVoted = TextEditingController();
+  TextEditingController txtViews = TextEditingController();
+  TextEditingController txtEpisodes = TextEditingController();
+  TextEditingController txtRuntime = TextEditingController();
+  TextEditingController txtReleaseDate = TextEditingController();
+  TextEditingController txtReleaseYear = TextEditingController();
+  TextEditingController txtFrom = TextEditingController();
+  TextEditingController txtForm = TextEditingController();
 
   final _multiSelectKey = GlobalKey<FormFieldState>();
 
@@ -31,6 +40,14 @@ class _MovieFormTabState extends State<MovieFormTab> {
       txtTitle.text = widget.data['title'];
       txtSubTitle.text = widget.data['subTitle'];
       txtStoryLine.text = widget.data['storyline'];
+      txtRuntime.text = widget.data['runtime'];
+      txtReleaseDate.text = widget.data['releaseDate'];
+      txtReleaseYear.text = widget.data['releaseYear'];
+      txtFrom.text = widget.data['from'];
+      txtForm.text = widget.data['form']? 'Series': 'Odds';
+      txtVoted.text = widget.data['pointVoted'].toString();
+      txtEpisodes.text = widget.data['nEpisodes'].toString();
+      txtViews.text = widget.data['views'].toString();
     }
   }
 
@@ -49,28 +66,42 @@ class _MovieFormTabState extends State<MovieFormTab> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: GestureDetector(
-                      child: Container(
-                        width: screenSize.width,
-                        height: screenSize.height * 0.5,
-                        margin: EdgeInsets.only(right: defaultPadding),
-                        decoration: BoxDecoration(
-                            color: bgColor,
-                            borderRadius:
-                                BorderRadius.circular(defaultBorderRadius)),
-                        child: Center(
-                          child: Text("UPLOAD IMAGE"),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          child: Container(
+                            width: screenSize.width,
+                            height: screenSize.height * 0.55,
+                            margin: EdgeInsets.only(right: defaultPadding, top: defaultPadding),
+                            decoration: BoxDecoration(
+                                color: bgColor,
+                                borderRadius:
+                                    BorderRadius.circular(defaultBorderRadius)),
+                            child: Center(
+                              child: Text("Upload Image"),
+                            ),
+                          ),
+                          onTap: () async {
+                            FilePickerResult result =
+                                await FilePicker.platform.pickFiles();
+                            if (result != null) {
+                              print(result.files.single.path);
+                            } else {
+                              // User canceled the picker
+                            }
+                          },
                         ),
-                      ),
-                      onTap: () async {
-                        FilePickerResult result =
-                            await FilePicker.platform.pickFiles();
-                        if (result != null) {
-                          print(result.files.single.path);
-                        } else {
-                          // User canceled the picker
-                        }
-                      },
+                        Container(
+                          margin: EdgeInsets.only(right: defaultPadding, top: defaultPadding),
+                          child: textEditFormFill(
+                            context,
+                            color: Colors.white,
+                            labelText: 'Form',
+                            backgroundColor: bgColor,
+                            controller: txtForm,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
@@ -89,7 +120,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 child: textEditFormFill(
                                   context,
                                   color: Colors.white,
-                                  labelText: 'TITLE',
+                                  labelText: 'Title',
                                   backgroundColor: bgColor,
                                   controller: txtTitle,
                                 ),
@@ -103,7 +134,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                   context,
                                   controller: txtSubTitle,
                                   color: Colors.white,
-                                  labelText: 'SUBTITLE',
+                                  labelText: 'Subtitle',
                                   backgroundColor: bgColor,
                                 ),
                               ),
@@ -114,8 +145,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
                           ),
                           textEditFormFill(context,
                               controller: txtStoryLine,
-                              labelText: 'STORY LINE',
-                              height: 150,
+                              labelText: 'Storyline',
+                              height: screenSize.height * 0.29,
                               color: Colors.white,
                               backgroundColor: bgColor,
                               width: MediaQuery.of(context).size.width),
@@ -126,11 +157,11 @@ class _MovieFormTabState extends State<MovieFormTab> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                flex: 3,
                                 child: textEditFormFill(
                                   context,
+                                  controller: txtEpisodes,
                                   color: Colors.white,
-                                  labelText: 'FROM',
+                                  labelText: 'Episodes',
                                   backgroundColor: bgColor,
                                 ),
                               ),
@@ -138,11 +169,11 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 width: defaultPadding,
                               ),
                               Expanded(
-                                flex: 3,
                                 child: textEditFormFill(
                                   context,
+                                  controller: txtFrom,
                                   color: Colors.white,
-                                  labelText: 'VIEWS',
+                                  labelText: 'From',
                                   backgroundColor: bgColor,
                                 ),
                               ),
@@ -150,11 +181,35 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 width: defaultPadding,
                               ),
                               Expanded(
-                                flex: 3,
                                 child: textEditFormFill(
                                   context,
+                                  controller: txtVoted,
                                   color: Colors.white,
-                                  labelText: 'VOTED',
+                                  labelText: 'Votes',
+                                  backgroundColor: bgColor,
+                                ),
+                              ),
+                              SizedBox(
+                                width: defaultPadding,
+                              ),
+                              Expanded(
+                                child: textEditFormFill(
+                                  context,
+                                  controller: txtViews,
+                                  color: Colors.white,
+                                  labelText: 'Views',
+                                  backgroundColor: bgColor,
+                                ),
+                              ),
+                              SizedBox(
+                                width: defaultPadding,
+                              ),
+                              Expanded(
+                                child: textEditFormFill(
+                                  context,
+                                  controller: txtRuntime,
+                                  color: Colors.white,
+                                  labelText: 'Runtime',
                                   backgroundColor: bgColor,
                                 ),
                               ),
@@ -168,37 +223,18 @@ class _MovieFormTabState extends State<MovieFormTab> {
                             children: [
                               Expanded(
                                   flex: 2,
-                                  child: Container(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Text(
-                                            "RELEASE DATE",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: bgColor,
-                                            borderRadius: BorderRadius.circular(
-                                                defaultBorderRadius),
-                                          ),
-                                          child: ListTile(
-                                            title: Text(
-                                                "${pickedDate.day} - ${pickedDate.month} - ${pickedDate.year}"),
-                                            trailing:
-                                                Icon(Icons.arrow_drop_down),
-                                            onTap: _pickDate,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
+                                  child: textEditFormFill(
+                                      context,
+                                      labelText: 'Release Date',
+                                      controller: txtReleaseDate,
+                                      backgroundColor: bgColor,
+                                      color: Colors.white,
+                                      readOnly: true,
+                                      onTap: (){
+                                        _pickDate();
+                                      }
+                                  ),
+                              ),
                               SizedBox(
                                 width: defaultPadding,
                               ),
@@ -206,22 +242,27 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 flex: 2,
                                 child: textEditFormFill(
                                   context,
+                                  controller: txtReleaseYear,
                                   color: Colors.white,
-                                  labelText: 'RELEASE YEAR',
+                                  labelText: 'Release Year',
                                   backgroundColor: bgColor,
                                 ),
                               ),
+                              SizedBox(
+                                width: defaultPadding,
+                              ),
+                              Expanded(
+                                flex: 6,
+                                child: textEditFormFill(
+                                  context,
+                                  controller: txtTrailer,
+                                  color: Colors.white,
+                                  labelText: 'Trailer',
+                                  backgroundColor: bgColor,
+                                  width: (MediaQuery.of(context).size.width),
+                                ),
+                              ),
                             ],
-                          ),
-                          SizedBox(
-                            height: defaultPadding,
-                          ),
-                          textEditFormFill(
-                            context,
-                            color: Colors.white,
-                            labelText: 'TRAILER',
-                            backgroundColor: bgColor,
-                            width: (MediaQuery.of(context).size.width),
                           ),
                         ],
                       ),
@@ -229,21 +270,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   )
                 ],
               ),
-              SizedBox(
-                height: defaultPadding,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: MultiSelectInput(
-                      items: ["hehe", "haha"],
-                    ),
-                  ),
-                  SizedBox(width: defaultPadding),
-                ],
-              ),
-              SizedBox(height: defaultPadding),
+              SizedBox(height: defaultPadding,),
+              SizedBox(height: defaultPadding,),
             ],
           ),
         ));
@@ -260,6 +288,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
     if (date != null) {
       setState(() {
         pickedDate = date;
+        txtReleaseDate.text = formatDate(pickedDate);
       });
     }
     ;
