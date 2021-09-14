@@ -1,6 +1,7 @@
 import 'package:admin/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:progressive_image/progressive_image.dart';
 
 Widget buttonDefault(
     {Widget leading,
@@ -25,7 +26,7 @@ Widget buttonDefault(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 leading ?? Container(child: null),
-                Center(child: Text(label)),
+                Text(label),
                 trailing ?? Container(child: null),
               ],
             )
@@ -33,9 +34,9 @@ Widget buttonDefault(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (leading != null || trailing != null)
-                  Center(child: trailing ?? leading)
+                  trailing ?? leading
                 else if (label != null)
-                  Center(child: Text(label))
+                  Text(label)
               ],
             ),
     ),
@@ -103,6 +104,25 @@ Widget textEditFormFill(
         ),
       ],
     ),
+  );
+}
+
+Widget netWorkProgressiveImage(BuildContext context, String source){
+  return ProgressiveImage(
+    placeholder:
+    AssetImage('assets/images/placeholder.jpg'),
+    // size: 1.87KB
+    thumbnail: source.toString() != null
+        ? NetworkImage(source.toString(), scale: 0.3)
+        : Image.asset('assets/images/no_image.png'),
+    // size: 1.29MB
+    image: source.toString() != null
+        ? NetworkImage(source.toString())
+        : Image.asset('assets/images/no_image.png'),
+    width: MediaQuery.of(context).size.width,
+    height: MediaQuery.of(context).size.height,
+    fadeDuration: const Duration(milliseconds: 500),
+    fit: BoxFit.cover,
   );
 }
 

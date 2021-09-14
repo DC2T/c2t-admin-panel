@@ -91,17 +91,17 @@ class _CatalogTableState extends State<CatalogTable> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 buttonDefault(
-                    width: 85,
-                    label: 'Pre',
-                    leading: Icon(Icons.arrow_back_ios),
+                    width: 50,
+                    height: 30,
+                    leading: Center(child: Icon(Icons.arrow_back_ios, size: 14,)),
                     onTap: _preNav),
                 SizedBox(
                   width: defaultPadding,
                 ),
                 buttonDefault(
-                    width: 85,
-                    label: 'Next',
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    width: 50,
+                    height: 30,
+                    trailing: Center(child: Icon(Icons.arrow_forward_ios, size: 14,)),
                     onTap: _nextNav),
               ],
             ),
@@ -164,22 +164,8 @@ class _CatalogTableState extends State<CatalogTable> {
                       padding: EdgeInsets.symmetric(vertical: 8.0),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0)),
-                      child: ProgressiveImage(
-                        placeholder:
-                            AssetImage('assets/images/placeholder.jpg'),
-                        // size: 1.87KB
-                        thumbnail: row[column].toString() != null
-                            ? NetworkImage(row[column].toString(), scale: 0.3)
-                            : Image.asset('assets/images/no_image.png'),
-                        // size: 1.29MB
-                        image: row[column].toString() != null
-                            ? NetworkImage(row[column].toString())
-                            : Image.asset('assets/images/no_image.png'),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        fadeDuration: const Duration(milliseconds: 500),
-                        fit: BoxFit.cover,
-                      ),
+                      child: netWorkProgressiveImage(
+                          context, row[column].toString()),
                       // child: Image.network(row[column].toString()),
                     ),
                   );
@@ -210,150 +196,121 @@ class _CatalogTableState extends State<CatalogTable> {
         context: context,
         builder: (_) {
           return AlertDialog(
+            titlePadding: const EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
             title: Text('ID: ${data['_id'].toString()}'),
             content: Container(
               width: MediaQuery.of(context).size.width * 0.3,
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: Stack(
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: ListView(
                 children: [
-                  Column(
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // image
-                          data['photo'] != null
-                              ? Container(
-                                  width: (MediaQuery.of(context).size.width * 0.3) *
-                                      0.3,
-                                  height:
-                                      (MediaQuery.of(context).size.height * 0.5) *
-                                          0.4,
-                                  child: ProgressiveImage(
-                                    placeholder:
-                                        AssetImage('assets/images/placeholder.jpg'),
-                                    // size: 1.87KB
-                                    thumbnail: NetworkImage(
-                                        data['photo'].toString(),
-                                        scale: 0.3),
-                                    // size: 1.29MB
-                                    image: NetworkImage(data['photo'].toString()),
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height,
-                                    fadeDuration: const Duration(milliseconds: 500),
-                                    fit: BoxFit.cover,
-                                  ))
-                              : Container(child: null),
-                          SizedBox(
-                            width: data['photo'] != null ? defaultPadding : 0.0,
-                          ),
-                          // name, title
-                          Expanded(
-                            child: Column(
-                              children: [
-                                textEditFormFill(
-                                  context,
-                                  color: Colors.white,
-                                  labelText: widget.table == 'Worker'?'IP':'Name',
-                                  backgroundColor: bgColor,
-                                  initValue:
-                                      '${data['name'] ?? data['title'] ?? data['ip']}',
-                                  readOnly: true,
-                                ),
-                                (data['views'] != null ||
-                                        data['pointVoted'] != null)
-                                    ? Container(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              child: Expanded(
-                                                child: textEditFormFill(
-                                                  context,
-                                                  color: Colors.white,
-                                                  labelText: 'Views',
-                                                  backgroundColor: bgColor,
-                                                  initValue:
-                                                      '${data['views'].toString()}',
-                                                  readOnly: true,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: defaultPadding),
-                                            Container(
-                                              child: Expanded(
-                                                child: textEditFormFill(
-                                                  context,
-                                                  color: Colors.white,
-                                                  labelText: 'Votes',
-                                                  backgroundColor: bgColor,
-                                                  initValue:
-                                                      '${data['pointVotes'].toString()}',
-                                                  readOnly: true,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : Container(child: null),
-                              ],
+                      // image
+                      data['photo'] != null
+                          ? Container(
+                              width: (MediaQuery.of(context).size.width *
+                                      0.3) *
+                                  0.3,
+                              height: (MediaQuery.of(context).size.height *
+                                      0.5) *
+                                  0.4,
+                              child: netWorkProgressiveImage(
+                                  context, data['photo']),
+                            )
+                          : Container(child: null),
+                      SizedBox(
+                        width: data['photo'] != null ? defaultPadding : 0.0,
+                      ),
+                      // name, title
+                      Expanded(
+                        child: Column(
+                          children: [
+                            textEditFormFill(
+                              context,
+                              color: Colors.white,
+                              labelText:
+                                  widget.table == 'Worker' ? 'IP' : 'Name',
+                              backgroundColor: bgColor,
+                              initValue:
+                                  '${data['name'] ?? data['title'] ?? data['ip']}',
+                              readOnly: true,
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: defaultPadding,
-                      ),
-                      Expanded(
-                        child: textEditFormFill(
-                          context,
-                          color: Colors.white,
-                          backgroundColor: bgColor,
-                          labelText: widget.table == 'Worker'?'UserName':'Runtime',
-                          initValue:
-                          '${data['runtime'] ?? data['username']}',
-                          readOnly: true,
+                            (data['views'] != null ||
+                                    data['pointVoted'] != null)
+                                ? Container(
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          child: Expanded(
+                                            child: textEditFormFill(
+                                              context,
+                                              color: Colors.white,
+                                              labelText: 'Views',
+                                              backgroundColor: bgColor,
+                                              initValue:
+                                                  '${data['views'].toString()}',
+                                              readOnly: true,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: defaultPadding),
+                                        Container(
+                                          child: Expanded(
+                                            child: textEditFormFill(
+                                              context,
+                                              color: Colors.white,
+                                              labelText: 'Votes',
+                                              backgroundColor: bgColor,
+                                              initValue:
+                                                  '${data['pointVotes'].toString()}',
+                                              readOnly: true,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container(child: null),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        width: defaultPadding,
-                      ),
-                      Expanded(
-                        child: widget.table == 'Worker'?textEditFormFill(
-                          context,
-                          color: Colors.white,
-                          backgroundColor: bgColor,
-                          labelText:'Rent',
-                          initValue:
-                          '${data['rent']}',
-                          readOnly: true,
-                        ): Container(child: null),
                       ),
                     ],
                   ),
-                  Positioned(
-                    right: 0.0,
-                    bottom: defaultPadding,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        buttonDefault(
-                            leading: Icon(Icons.edit),
-                            onTap: () {
-                              Navigator.pop(context);
-                              context.read<ScreenController>().controlScreen(
-                                  screenName: 'Modifier',
-                                  modifier: widget.table,
-                                  data: data);
-                            }),
-                        SizedBox(width: defaultPadding),
-                        buttonDefault(leading: Icon(Icons.delete)),
-                      ],
-                    ),
+                  SizedBox(
+                    width: defaultPadding,
+                  ),
+                  textEditFormFill(
+                    context,
+                    color: Colors.white,
+                    backgroundColor: bgColor,
+                    labelText:
+                        widget.table == 'Worker' ? 'User Name' : 'Runtime',
+                    initValue: '${data['runtime'] ?? data['username']}',
+                    readOnly: true,
                   ),
                 ],
               ),
             ),
+            actions: [
+              buttonDefault(
+                  width: 50,
+                  height: 50,
+                  leading: Icon(Icons.edit, size: 14,),
+                  onTap: () {
+                    Navigator.pop(context);
+                    context.read<ScreenController>().controlScreen(
+                        screenName: 'Modifier',
+                        modifier: widget.table,
+                        data: data);
+                  }),
+              buttonDefault(
+                width: 50,
+                height: 50,
+                leading: Icon(Icons.delete, size: 14,),
+              ),
+            ],
           );
         });
   }
