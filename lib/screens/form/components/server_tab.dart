@@ -12,11 +12,15 @@ class ServerFormTab extends StatefulWidget {
 }
 
 class _ServerFormTabState extends State<ServerFormTab> {
-  bool obscureText = true;
+  bool obscureText = false;
   TextEditingController txtIP = TextEditingController();
   TextEditingController txtUserName = TextEditingController();
   TextEditingController txtPassWord = TextEditingController();
   TextEditingController txtRent = TextEditingController();
+  TextEditingController txtStatus = TextEditingController();
+  TextEditingController txtRam = TextEditingController();
+  TextEditingController txtCpu = TextEditingController();
+  TextEditingController txtDisk = TextEditingController();
 
   @override
   void initState() {
@@ -27,6 +31,10 @@ class _ServerFormTabState extends State<ServerFormTab> {
       txtUserName.text = widget.data['username'];
       txtPassWord.text = widget.data['password'];
       txtRent.text = widget.data['rent'];
+      txtStatus.text = widget.data['status'];
+      txtRam.text = widget.data['ram'];
+      txtCpu.text = widget.data['cpu'];
+      txtDisk.text = widget.data['disk'];
     }
   }
 
@@ -102,22 +110,70 @@ class _ServerFormTabState extends State<ServerFormTab> {
           ],
         ),
         SizedBox(height: defaultPadding),
+        Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: textEditFormFill(
+                context,
+                controller: txtStatus,
+                color: Colors.white,
+                labelText: 'STATUS',
+                backgroundColor: bgColor,
+              ),
+            ),
+            SizedBox(width: defaultPadding),
+            Expanded(
+              flex: 4,
+              child: textEditFormFill(
+                context,
+                controller: txtRam,
+                color: Colors.white,
+                labelText: 'RAM',
+                backgroundColor: bgColor,
+              ),
+            ),
+            SizedBox(width: defaultPadding),Expanded(
+              flex: 4,
+              child: textEditFormFill(
+                context,
+                controller: txtCpu,
+                color: Colors.white,
+                labelText: 'CPU',
+                backgroundColor: bgColor,
+              ),
+            ),
+            SizedBox(width: defaultPadding),Expanded(
+              flex: 4,
+              child: textEditFormFill(
+                context,
+                controller: txtDisk,
+                color: Colors.white,
+                labelText: 'DISK',
+                backgroundColor: bgColor,
+              ),
+            ),
+          ],
+        ),
+        
+        SizedBox(height: defaultPadding * 2),
         Container(
           width: MediaQuery.of(context).size.width,
-          child: Center(
-            child: TextButton(
-              onPressed: () {},
-              child: Text('SUBMIT',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  )),
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
-                backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
-              ),
+          alignment: Alignment.topRight,
+          child: TextButton(
+            onPressed: () {
+              print('submited');
+            },
+            child: Text('SUBMIT',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                )),
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+              backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
             ),
           ),
         )

@@ -163,7 +163,7 @@ class _MultiSelectInputState extends State<MultiSelectInput> {
                 children: selected ?? Container(),
               ),
             ),
-            trailing: Icon(Icons.arrow_drop_down),
+            trailing: showItem ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down),
             onTap: () {
               setState(() {
                 showItem = !showItem;
