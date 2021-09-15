@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:admin/constants.dart';
+import 'package:admin/models/Worker.dart';
 
 class ServerFormTab extends StatefulWidget {
   var data;
@@ -13,6 +14,7 @@ class ServerFormTab extends StatefulWidget {
 
 class _ServerFormTabState extends State<ServerFormTab> {
   bool obscureText = false;
+  bool isUpdate = false;
   TextEditingController txtIP = TextEditingController();
   TextEditingController txtUserName = TextEditingController();
   TextEditingController txtPassWord = TextEditingController();
@@ -35,6 +37,10 @@ class _ServerFormTabState extends State<ServerFormTab> {
       txtRam.text = widget.data['ram'];
       txtCpu.text = widget.data['cpu'];
       txtDisk.text = widget.data['disk'];
+
+      setState(() {
+        isUpdate = true;
+      });
     }
   }
 
@@ -161,9 +167,6 @@ class _ServerFormTabState extends State<ServerFormTab> {
           width: MediaQuery.of(context).size.width,
           alignment: Alignment.topRight,
           child: TextButton(
-            onPressed: () {
-              print('submited');
-            },
             child: Text('SUBMIT',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -175,9 +178,82 @@ class _ServerFormTabState extends State<ServerFormTab> {
                   EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
               backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
             ),
+            onPressed: () {
+              if(isUpdate) {
+                //upadate worker
+                _showDialog('update');
+              } else {
+                //add worker
+                _showDialog('add');
+              }
+            },
           ),
         )
       ]),
     );
+  }
+
+  _showDialog(String func) {
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          content: Text('Are you sure $func this item'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context, 
+                  builder: (_) {
+                    return AlertDialog(
+                      content: FutureBuilder(
+                        future: _modifiWorker(func),
+                        builder: (context, snapshot) {
+                          if(snapshot.hasData) {
+                            return Text('Success');
+                          }
+                          return CircularProgressIndicator();
+                        }),
+                    );
+                  }
+                );
+              }, 
+              child: Text('Yes')
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+              child: Text('No')
+            ),
+          ],
+        );
+      });
+  }
+
+  _modifiWorker(String func) {
+    var id = (widget.data != null) ? widget.data["_id"] : "";
+    var data = {
+      "ip" : txtIP.text,
+      "username" : txtUserName.text,
+      "password" : txtPassWord.text,
+      "rent" : txtRent.text,
+      "status" : txtStatus.text,
+      "ram" : txtRam.text,
+      "cpu" : txtCpu.text,
+      "disk" : txtDisk.text,
+    };
+
+    var result;
+    if(func == 'add') {
+      print('add');
+      result = Worker.create(data);
+    } else if(func == 'update') {
+      print('update');
+      result = Worker.update(id, data);
+    }
+    print(result);
+    return result;
   }
 }
