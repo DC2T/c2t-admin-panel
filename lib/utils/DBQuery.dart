@@ -43,15 +43,15 @@ class DBQuery{
   Future post(Map<String, dynamic> data) async {
     var url = Uri.parse('${this.uri}/modifier');
 
-    Map<String, String> post_data = {};
+    Map<String, dynamic> post_data = {};
     data.forEach((key, value) {
       post_data[key] = value.toString();
     });
     print(post_data);
-    var response = await http.post(url, headers: AppConfig.headers, body: post_data);
+    var response = await http.post(url, body: post_data);
 
     print(url);
-    print(response.body);
+    // print(response.body.toString());
 
     if (response.statusCode == 200 || response.statusCode == 201)
       return json.decode(response.body);

@@ -309,6 +309,14 @@ class _CatalogTableState extends State<CatalogTable> {
                 width: 50,
                 height: 50,
                 leading: Icon(Icons.delete, size: 14,),
+                onTap: () {
+                  switch (widget.table) {
+                    case "Worker":
+                      print(data["_id"]);
+                      break;
+                    default:
+                  }
+                }
               ),
             ],
           );

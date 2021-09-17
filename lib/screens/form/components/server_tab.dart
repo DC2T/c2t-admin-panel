@@ -234,7 +234,7 @@ class _ServerFormTabState extends State<ServerFormTab> {
 
   _modifiWorker(String func) {
     var id = (widget.data != null) ? widget.data["_id"] : "";
-    var data = {
+    Map<String, dynamic> data = {
       "ip" : txtIP.text,
       "username" : txtUserName.text,
       "password" : txtPassWord.text,
