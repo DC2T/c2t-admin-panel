@@ -14,10 +14,10 @@ class TextEditFormFill extends StatefulWidget {
   Color backgroundColor;
   int maxLine;
   bool dropdownBox;
-  bool dropdownSearch;
   bool readOnly;
   String helperText;
   bool obscureText;
+  List<Map<String, dynamic>> data;
 
   TextEditFormFill({
     this.controller,
@@ -33,33 +33,77 @@ class TextEditFormFill extends StatefulWidget {
     this.readOnly = false,
     this.onTap,
     this.dropdownBox = false,
-    this.dropdownSearch = false,
     this.helperText,
-    this.obscureText = true
+    this.obscureText = true,
+    this.data = null,
   });
 
   @override
   _TextEditFormFillState createState() => _TextEditFormFillState();
 }
 
-class _TextEditFormFillState extends State<TextEditFormFill> {
+class _TextEditFormFillState extends State<TextEditFormFill> with SingleTickerProviderStateMixin {
   bool _isTyping = false;
   bool _isOpenDropdown = false;
+
+  GlobalKey _key;
+  bool isDropDownOpen = false;
+  Offset dropPosition;
+  Size fieldSize;
+  OverlayEntry _overlayEntry;
+  BorderRadius _borderRadius;
+  AnimationController _animationController;
 
   @override
   void initState() {
     // TODO: implement initState
+    widget.controller.addListener(_textEditListener);
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 250),
+    );
+    _borderRadius = BorderRadius.circular(defaultBorderRadius);
     super.initState();
-    widget.controller.addListener(_printLatestValue);
   }
 
-  _printLatestValue() {
+  _textEditListener() {
     if (widget.controller.text != '') {
       _isTyping = true;
     } else {
       _isTyping = false;
     }
     setState(() {});
+  }
+
+  _dropdownOnTap(){
+      isDropDownOpen?closeDropDown():openDropDown();
+  }
+
+  void closeDropDown() {
+    _overlayEntry.remove();
+    _animationController.reverse();
+    isDropDownOpen = !isDropDownOpen;
+  }
+
+  findButton() {
+    RenderBox renderBox = context.findRenderObject();
+    fieldSize = renderBox.size;
+    dropPosition = renderBox.localToGlobal(Offset.zero);
+  }
+
+  void openDropDown() {
+    findButton();
+    _overlayEntry = dropdown();
+    Overlay.of(context).insert(_overlayEntry);
+    isDropDownOpen = !isDropDownOpen;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    widget.controller.dispose();
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -96,7 +140,7 @@ class _TextEditFormFillState extends State<TextEditFormFill> {
               cursorColor: Colors.white,
               style: TextStyle(fontSize: 14.0),
               obscureText: !widget.obscureText,
-              onTap: widget.onTap ?? null,
+              onTap: widget.onTap ?? (widget.dropdownBox?_dropdownOnTap:null),
               readOnly: widget.readOnly,
               minLines: 1,
               maxLines: widget.maxLine,
@@ -110,17 +154,9 @@ class _TextEditFormFillState extends State<TextEditFormFill> {
                   suffixIcon: widget.suffixIcon ?? cleanText()),
             ),
           ),
-          dropdown(),
-          dropdownSearch(),
         ],
       ),
     );
-  }
-
-  openDropdown(){
-    setState(() {
-      _isOpenDropdown = !_isOpenDropdown;
-    });
   }
 
   cleanText() {
@@ -139,60 +175,61 @@ class _TextEditFormFillState extends State<TextEditFormFill> {
     );
   }
 
-  dropdownSearch() {
-    return AnimatedContainer(
-      height: (_isTyping && widget.dropdownSearch) ? 150 : 0.0,
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
-      decoration: BoxDecoration(
-        color: widget.backgroundColor,
-        borderRadius:
-            BorderRadius.vertical(bottom: Radius.circular(defaultBorderRadius)),
-      ),
-      duration: Duration(milliseconds: 400),
-      child: ListView(
-        children: [
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-
-        ],
-      ),
+  OverlayEntry dropdown() {
+    return OverlayEntry(
+      builder: (context){
+        return Positioned(
+          top: dropPosition.dy + fieldSize.height,
+          left: dropPosition.dx,
+          width: fieldSize.width,
+          child: Material(
+            color: Colors.transparent,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: defaultPadding),
+                  padding: const EdgeInsets.only(top: defaultPadding),
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: _borderRadius,
+                  ),
+                  child: Theme(
+                    data: ThemeData(
+                      iconTheme: IconThemeData(
+                        color: primaryColor,
+                      ),
+                    ),
+                    child: Container(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: widget.data.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              widget.controller.text = widget.data[index]['name'];
+                              closeDropDown();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              width: MediaQuery.of(context).size.width,
+                              height: 40.0,
+                              child: dropdownItem(widget.data[index]),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
     );
   }
 
-  dropdown() {
-    return AnimatedContainer(
-      height: (_isOpenDropdown && !_isTyping) ? 150 : 0.0,
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
-      decoration: BoxDecoration(
-        color: widget.backgroundColor,
-        borderRadius:
-            BorderRadius.vertical(bottom: Radius.circular(defaultBorderRadius)),
-      ),
-      duration: Duration(milliseconds: 400),
-      child: ListView(
-        children: [
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-          Text(widget.controller.text.toString()),
-        ],
-      ),
-    );
+  dropdownItem(data){
+    return Text(data['name'].toString());
   }
 }
