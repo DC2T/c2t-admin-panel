@@ -65,12 +65,12 @@ class DBQuery{
   Future update(id, Map<String, dynamic> data) async {
     var url = Uri.parse('${this.uri}/modifier/${id.toString()}');
 
-    Map<String, String> update_data = {};
+    Map<String, dynamic> update_data = {};
     data.forEach((key, value) {
       update_data[key] = value.toString();
     });
     print(update_data);
-    var response = await http.post(url, headers: AppConfig.headers, body: update_data);
+    var response = await http.post(url, body: update_data);
 
     print(url);
     print(response.body);
@@ -86,7 +86,7 @@ class DBQuery{
 
   Future delete(id) async {
     var url = Uri.parse('${this.uri}/delete/${id.toString()}');
-    var response = await http.delete(url, headers: AppConfig.headers);
+    var response = await http.delete(url);
 
     if (response.statusCode == 200)
       return json.decode(response.body);

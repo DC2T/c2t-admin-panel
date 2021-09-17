@@ -2,6 +2,7 @@ import 'package:admin/constants.dart';
 import 'package:flutter/material.dart';
 
 class TextEditFormFill extends StatefulWidget {
+  TextEditingController controller;
   String initValue;
   double height;
   double width;
@@ -12,10 +13,14 @@ class TextEditFormFill extends StatefulWidget {
   Color color;
   Color backgroundColor;
   int maxLine;
-  bool isDropdownBox;
+  bool dropdownBox;
+  bool dropdownSearch;
   bool readOnly;
+  String helperText;
+  bool obscureText;
 
   TextEditFormFill({
+    this.controller,
     this.initValue,
     this.height = 48,
     this.width,
@@ -27,7 +32,10 @@ class TextEditFormFill extends StatefulWidget {
     this.maxLine = 100,
     this.readOnly = false,
     this.onTap,
-    this.isDropdownBox = false,
+    this.dropdownBox = false,
+    this.dropdownSearch = false,
+    this.helperText,
+    this.obscureText = true
   });
 
   @override
@@ -35,18 +43,18 @@ class TextEditFormFill extends StatefulWidget {
 }
 
 class _TextEditFormFillState extends State<TextEditFormFill> {
-  TextEditingController controller = TextEditingController();
   bool _isTyping = false;
+  bool _isOpenDropdown = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.addListener(_printLatestValue);
+    widget.controller.addListener(_printLatestValue);
   }
 
   _printLatestValue() {
-    if (controller.text != '') {
+    if (widget.controller.text != '') {
       _isTyping = true;
     } else {
       _isTyping = false;
@@ -78,49 +86,62 @@ class _TextEditFormFillState extends State<TextEditFormFill> {
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             decoration: BoxDecoration(
                 color: widget.backgroundColor,
-                borderRadius: _isTyping
+                borderRadius: (_isTyping || _isOpenDropdown)
                     ? BorderRadius.vertical(
                         top: Radius.circular(defaultBorderRadius))
                     : BorderRadius.circular(defaultBorderRadius)),
             child: TextFormField(
               initialValue: widget.initValue,
-              controller: controller,
+              controller: widget.controller,
               cursorColor: Colors.white,
               style: TextStyle(fontSize: 14.0),
-              minLines: 1,
-              onTap: widget.onTap??null,
+              obscureText: !widget.obscureText,
+              onTap: widget.onTap ?? null,
               readOnly: widget.readOnly,
+              minLines: 1,
               maxLines: widget.maxLine,
               decoration: InputDecoration(
                   hintText: widget.hintText ?? '',
+                  helperText: widget.helperText,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   errorBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
-                  suffixIcon: widget.suffixIcon??cleanText()),
+                  suffixIcon: widget.suffixIcon ?? cleanText()),
             ),
           ),
-          widget.isDropdownBox?dropdown():dropdownSearch(),
+          dropdown(),
+          dropdownSearch(),
         ],
       ),
     );
   }
-  cleanText(){
+
+  openDropdown(){
+    setState(() {
+      _isOpenDropdown = !_isOpenDropdown;
+    });
+  }
+
+  cleanText() {
     return AnimatedContainer(
       duration: Duration(milliseconds: 400),
-      width: _isTyping?30:0.0,
-      height:_isTyping?30:0.0,
-      child: InkWell(
-        onTap: (){
-          controller.text = '';
-        },
-        child: Icon(Icons.cancel),
-      ),
+      width: _isTyping ? 30 : 0.0,
+      height: _isTyping ? 30 : 0.0,
+      child: _isTyping
+          ? InkWell(
+              onTap: () {
+                widget.controller.text = '';
+              },
+              child: Icon(Icons.cancel),
+            )
+          : null,
     );
   }
+
   dropdownSearch() {
     return AnimatedContainer(
-      height: _isTyping ? 150 : 0.0,
+      height: (_isTyping && widget.dropdownSearch) ? 150 : 0.0,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
@@ -131,47 +152,45 @@ class _TextEditFormFillState extends State<TextEditFormFill> {
       duration: Duration(milliseconds: 400),
       child: ListView(
         children: [
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+
         ],
       ),
     );
   }
-  dropdown(){
+
+  dropdown() {
     return AnimatedContainer(
-      height: _isTyping ? 150 : 0.0,
+      height: (_isOpenDropdown && !_isTyping) ? 150 : 0.0,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         borderRadius:
-        BorderRadius.vertical(bottom: Radius.circular(defaultBorderRadius)),
+            BorderRadius.vertical(bottom: Radius.circular(defaultBorderRadius)),
       ),
       duration: Duration(milliseconds: 400),
       child: ListView(
         children: [
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
-          Text(controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
+          Text(widget.controller.text.toString()),
         ],
       ),
     );
