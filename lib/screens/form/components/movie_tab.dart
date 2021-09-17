@@ -105,7 +105,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
                             labelText: 'Form',
                             backgroundColor: bgColor,
                             readOnly: true,
-                            isDropdownBox: true,
+                            dropdownBox: true,
+                            controller: txtForm,
                           ),
                         ),
                       ],
@@ -123,8 +124,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                             children: [
                               Expanded(
                                 flex: 2,
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   color: Colors.white,
                                   labelText: 'Title',
                                   backgroundColor: bgColor,
@@ -136,8 +136,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   controller: txtSubTitle,
                                   color: Colors.white,
                                   labelText: 'Subtitle',
@@ -149,7 +148,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                           SizedBox(
                             height: defaultPadding,
                           ),
-                          textEditFormFill(context,
+                          TextEditFormFill(
                               controller: txtStoryLine,
                               labelText: 'Storyline',
                               height: screenSize.height * 0.29,
@@ -163,8 +162,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   controller: txtEpisodes,
                                   color: Colors.white,
                                   labelText: 'Episodes',
@@ -175,8 +173,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 width: defaultPadding,
                               ),
                               Expanded(
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   controller: txtFrom,
                                   color: Colors.white,
                                   labelText: 'From',
@@ -187,8 +184,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 width: defaultPadding,
                               ),
                               Expanded(
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   controller: txtVoted,
                                   color: Colors.white,
                                   labelText: 'Votes',
@@ -199,8 +195,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 width: defaultPadding,
                               ),
                               Expanded(
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   controller: txtViews,
                                   color: Colors.white,
                                   labelText: 'Views',
@@ -211,8 +206,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                 width: defaultPadding,
                               ),
                               Expanded(
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   controller: txtRuntime,
                                   color: Colors.white,
                                   labelText: 'Runtime',
@@ -229,10 +223,9 @@ class _MovieFormTabState extends State<MovieFormTab> {
                             children: [
                               Expanded(
                                   flex: 2,
-                                  child: textEditFormFill(
-                                      context,
-                                      labelText: 'Release Date',
+                                  child: TextEditFormFill(
                                       controller: txtReleaseDate,
+                                      labelText: 'Release Date',
                                       backgroundColor: bgColor,
                                       color: Colors.white,
                                       readOnly: true,
@@ -246,8 +239,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                               ),
                               Expanded(
                                 flex: 2,
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   controller: txtReleaseYear,
                                   color: Colors.white,
                                   labelText: 'Release Year',
@@ -259,8 +251,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                               ),
                               Expanded(
                                 flex: 6,
-                                child: textEditFormFill(
-                                  context,
+                                child: TextEditFormFill(
                                   controller: txtTrailer,
                                   color: Colors.white,
                                   labelText: 'Trailer',
@@ -284,6 +275,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
                 children: [
                   Expanded(
                     child: TextEditFormFill(
+                      controller: txtCategories,
+                      dropdownSearch: true,
                       color: Colors.white,
                       labelText: 'Categories',
                       backgroundColor: bgColor,
@@ -294,6 +287,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   ),
                   Expanded(
                     child: TextEditFormFill(
+                      controller: txtDirectors,
+                      dropdownSearch: true,
                       color: Colors.white,
                       labelText: 'Directors',
                       backgroundColor: bgColor,
@@ -304,6 +299,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   ),
                   Expanded(
                     child: TextEditFormFill(
+                      controller: txtLanguages,
+                      dropdownSearch: true,
                       color: Colors.white,
                       labelText: 'Languages',
                       backgroundColor: bgColor,
@@ -314,6 +311,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   ),
                   Expanded(
                     child: TextEditFormFill(
+                      controller: txtCountries,
+                      dropdownSearch: true,
                       color: Colors.white,
                       labelText: 'Countries',
                       backgroundColor: bgColor,
