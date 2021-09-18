@@ -1,7 +1,15 @@
 import 'package:admin/constants.dart';
+import 'package:admin/models/Cast.dart';
+import 'package:admin/models/Category.dart';
+import 'package:admin/models/Country.dart';
+import 'package:admin/models/Director.dart';
+import 'package:admin/models/Keyword.dart';
+import 'package:admin/models/Language.dart';
+import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
 
 class TextEditFormFill extends StatefulWidget {
+  TextInputType inputType;
   TextEditingController controller;
   String initValue;
   double height;
@@ -17,7 +25,7 @@ class TextEditFormFill extends StatefulWidget {
   bool readOnly;
   String helperText;
   bool obscureText;
-  List<Map<String, dynamic>> data;
+  var data;
 
   TextEditFormFill({
     this.controller,
@@ -36,6 +44,7 @@ class TextEditFormFill extends StatefulWidget {
     this.helperText,
     this.obscureText = true,
     this.data = null,
+    this.inputType = TextInputType.text,
   });
 
   @override
@@ -43,6 +52,14 @@ class TextEditFormFill extends StatefulWidget {
 }
 
 class _TextEditFormFillState extends State<TextEditFormFill> with SingleTickerProviderStateMixin {
+  int page = 1;
+  int perPage = 20;
+  int pages = 1;
+  var totalRows;
+
+  var data;
+  List rows;
+
   bool _isTyping = false;
   bool _isOpenDropdown = false;
 
@@ -64,18 +81,25 @@ class _TextEditFormFillState extends State<TextEditFormFill> with SingleTickerPr
     );
     _borderRadius = BorderRadius.circular(defaultBorderRadius);
     super.initState();
+    rows = widget.data;
   }
 
   _textEditListener() {
     if (widget.controller.text != '') {
       _isTyping = true;
+      _fetchData();
+      if(!isDropDownOpen && rows!=null)
+        openDropDown();
     } else {
       _isTyping = false;
+      if(isDropDownOpen)
+        closeDropDown();
     }
     setState(() {});
   }
 
   _dropdownOnTap(){
+    if(rows!=null)
       isDropDownOpen?closeDropDown():openDropDown();
   }
 
@@ -106,6 +130,43 @@ class _TextEditFormFillState extends State<TextEditFormFill> with SingleTickerPr
     super.dispose();
   }
 
+  _fetchData() async {
+    switch (widget.labelText) {
+      case 'title':
+        break;
+      case 'Categories':
+        Category.filter_params['q'] = widget.controller.text;
+        data = (await Category.find())['data'];
+        break;
+      case 'Casts':
+        Cast.filter_params['q'] = widget.controller.text;
+        data = (await Cast.find())['data'];
+        break;
+      case 'Languages':
+        Language.filter_params['q'] = widget.controller.text;
+        data = (await Language.find())['data'];
+        break;
+      case 'Countries':
+        Country.filter_params['q'] = widget.controller.text;
+        data = (await Country.find())['data'];
+        break;
+      case 'Directors':
+        Director.filter_params['q'] = widget.controller.text;
+        data = (await Director.find())['data'];
+        break;
+      default:
+        break;
+    }
+    if(data !=null){
+      totalRows = data['totalRows'];
+      pages = (totalRows / perPage).ceil();
+      rows = data['data'];
+    }
+
+    setState(() {
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -130,15 +191,13 @@ class _TextEditFormFillState extends State<TextEditFormFill> with SingleTickerPr
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             decoration: BoxDecoration(
                 color: widget.backgroundColor,
-                borderRadius: (_isTyping || _isOpenDropdown)
-                    ? BorderRadius.vertical(
-                        top: Radius.circular(defaultBorderRadius))
-                    : BorderRadius.circular(defaultBorderRadius)),
+                borderRadius:  BorderRadius.circular(defaultBorderRadius)),
             child: TextFormField(
+              keyboardType: widget.inputType ,
               initialValue: widget.initValue,
               controller: widget.controller,
               cursorColor: Colors.white,
-              style: TextStyle(fontSize: 14.0),
+              style: TextStyle(fontSize: 12.0),
               obscureText: !widget.obscureText,
               onTap: widget.onTap ?? (widget.dropdownBox?_dropdownOnTap:null),
               readOnly: widget.readOnly,
@@ -202,18 +261,18 @@ class _TextEditFormFillState extends State<TextEditFormFill> with SingleTickerPr
                     child: Container(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: widget.data.length,
+                        itemCount: rows.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              widget.controller.text = widget.data[index]['name'];
+                              widget.controller.text = rows[index]['name'];
                               closeDropDown();
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 8.0),
                               width: MediaQuery.of(context).size.width,
                               height: 40.0,
-                              child: dropdownItem(widget.data[index]),
+                              child: dropdownItem(rows[index]),
                             ),
                           );
                         },
@@ -230,6 +289,7 @@ class _TextEditFormFillState extends State<TextEditFormFill> with SingleTickerPr
   }
 
   dropdownItem(data){
+    print(data);
     return Text(data['name'].toString());
   }
 }

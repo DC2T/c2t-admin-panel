@@ -1,10 +1,11 @@
-import 'package:admin/models/Category.dart';
+import 'package:admin/models/Movies.dart';
 import 'package:admin/screens/reuseable/text_form_customize.dart';
+import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:admin/constants.dart';
-import 'package:admin/screens/reuseable/widgets.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MovieFormTab extends StatefulWidget {
   var data;
@@ -20,7 +21,25 @@ class _MovieFormTabState extends State<MovieFormTab> {
   String title = '';
   DateTime pickedDate;
 
-  List<Map<String, dynamic>> formData = <Map<String, dynamic>>[
+  final txtTitle = TextEditingController();
+  final txtSubTitle = TextEditingController();
+  final txtStoryLine = TextEditingController();
+  final txtTrailer = TextEditingController();
+  final txtVoted = TextEditingController();
+  final txtViews = TextEditingController();
+  final txtEpisodes = TextEditingController();
+  final txtRuntime = TextEditingController();
+  final txtReleaseDate = TextEditingController();
+  final txtReleaseYear = TextEditingController();
+  final txtFrom = TextEditingController();
+  final txtForm = TextEditingController();
+  final txtCategories = TextEditingController();
+  final txtCountries = TextEditingController();
+  final txtDirectors = TextEditingController();
+  final txtCasts = TextEditingController();
+  final txtLanguages = TextEditingController();
+
+  var formData = [
     {
       'name': 'Odds',
       'value': false,
@@ -31,24 +50,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
     }
   ];
 
-  var data;
-
-  TextEditingController txtTitle = TextEditingController();
-  TextEditingController txtSubTitle = TextEditingController();
-  TextEditingController txtStoryLine = TextEditingController();
-  TextEditingController txtTrailer = TextEditingController();
-  TextEditingController txtVoted = TextEditingController();
-  TextEditingController txtViews = TextEditingController();
-  TextEditingController txtEpisodes = TextEditingController();
-  TextEditingController txtRuntime = TextEditingController();
-  TextEditingController txtReleaseDate = TextEditingController();
-  TextEditingController txtReleaseYear = TextEditingController();
-  TextEditingController txtFrom = TextEditingController();
-  TextEditingController txtForm = TextEditingController();
-  TextEditingController txtCategories = TextEditingController();
-  TextEditingController txtCountries = TextEditingController();
-  TextEditingController txtDirectors = TextEditingController();
-  TextEditingController txtLanguages = TextEditingController();
+  List<Map<String, dynamic>> episodes = [];
 
   void initState() {
     super.initState();
@@ -70,10 +72,15 @@ class _MovieFormTabState extends State<MovieFormTab> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery
-        .of(context)
-        .size;
-
+    var screenSize = MediaQuery.of(context).size;
+    var _crossAxisSpacing = defaultPadding;
+    var _crossAxisCount = 5;
+    var _width =
+        (screenSize.width * 0.9 - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
+            _crossAxisCount;
+    var cellHeight = 100;
+    var _aspectRatio = _width / cellHeight;
+    print('${_aspectRatio}, ${_width}');
     return Container(
         width: screenSize.width,
         height: screenSize.height,
@@ -89,29 +96,43 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   Expanded(
                     child: Column(
                       children: [
-                        GestureDetector(
-                          child: Container(
-                            width: screenSize.width,
-                            height: screenSize.height * 0.55,
-                            margin: EdgeInsets.only(
-                                right: defaultPadding, top: defaultPadding),
-                            decoration: BoxDecoration(
-                                color: bgColor,
-                                borderRadius:
-                                BorderRadius.circular(defaultBorderRadius)),
-                            child: Center(
-                              child: Text("Upload Image"),
-                            ),
+                        Container(
+                          width: screenSize.width,
+                          height: screenSize.height * 0.55,
+                          margin: EdgeInsets.only(
+                              right: defaultPadding, top: defaultPadding),
+                          decoration: BoxDecoration(
+                              color: bgColor,
+                              borderRadius:
+                                  BorderRadius.circular(defaultBorderRadius)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Text("Upload Image"),
+                              ),
+                              SizedBox(
+                                height: defaultPadding,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  buttonDefault(
+                                      leading: Icon(Icons.upload_file),
+                                      onTap: () {
+                                        pickFile();
+                                      }),
+                                  SizedBox(
+                                    width: defaultPadding,
+                                  ),
+                                  buttonDefault(
+                                      leading: Icon(Icons.link),
+                                      onTap: () async {}),
+                                ],
+                              )
+                            ],
                           ),
-                          onTap: () async {
-                            FilePickerResult result =
-                            await FilePicker.platform.pickFiles();
-                            if (result != null) {
-                              print(result.files.single.path);
-                            } else {
-                              // User canceled the picker
-                            }
-                          },
                         ),
                         Container(
                           margin: EdgeInsets.only(
@@ -167,14 +188,12 @@ class _MovieFormTabState extends State<MovieFormTab> {
                           ),
                           TextEditFormFill(
                               controller: txtStoryLine,
+                              inputType: TextInputType.multiline,
                               labelText: 'Storyline',
                               height: screenSize.height * 0.29,
                               color: Colors.white,
                               backgroundColor: bgColor,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width),
+                              width: MediaQuery.of(context).size.width),
                           SizedBox(
                             height: defaultPadding,
                           ),
@@ -183,6 +202,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                             children: [
                               Expanded(
                                 child: TextEditFormFill(
+                                  inputType: TextInputType.number,
                                   controller: txtEpisodes,
                                   color: Colors.white,
                                   labelText: 'Episodes',
@@ -205,6 +225,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                               ),
                               Expanded(
                                 child: TextEditFormFill(
+                                  inputType: TextInputType.number,
                                   controller: txtVoted,
                                   color: Colors.white,
                                   labelText: 'Votes',
@@ -216,6 +237,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                               ),
                               Expanded(
                                 child: TextEditFormFill(
+                                  inputType: TextInputType.number,
                                   controller: txtViews,
                                   color: Colors.white,
                                   labelText: 'Views',
@@ -251,8 +273,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                                     readOnly: true,
                                     onTap: () {
                                       _pickDate();
-                                    }
-                                ),
+                                    }),
                               ),
                               SizedBox(
                                 width: defaultPadding,
@@ -260,6 +281,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                               Expanded(
                                 flex: 2,
                                 child: TextEditFormFill(
+                                  inputType: TextInputType.number,
                                   controller: txtReleaseYear,
                                   color: Colors.white,
                                   labelText: 'Release Year',
@@ -297,6 +319,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                       controller: txtCategories,
                       color: Colors.white,
                       labelText: 'Categories',
+                      dropdownBox: true,
                       backgroundColor: bgColor,
                     ),
                   ),
@@ -308,6 +331,19 @@ class _MovieFormTabState extends State<MovieFormTab> {
                       controller: txtDirectors,
                       color: Colors.white,
                       labelText: 'Directors',
+                      dropdownBox: true,
+                      backgroundColor: bgColor,
+                    ),
+                  ),
+                  SizedBox(
+                    width: defaultPadding,
+                  ),
+                  Expanded(
+                    child: TextEditFormFill(
+                      controller: txtCasts,
+                      color: Colors.white,
+                      labelText: 'Casts',
+                      dropdownBox: true,
                       backgroundColor: bgColor,
                     ),
                   ),
@@ -319,6 +355,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                       controller: txtLanguages,
                       color: Colors.white,
                       labelText: 'Languages',
+                      dropdownBox: true,
                       backgroundColor: bgColor,
                     ),
                   ),
@@ -330,7 +367,76 @@ class _MovieFormTabState extends State<MovieFormTab> {
                       controller: txtCountries,
                       color: Colors.white,
                       labelText: 'Countries',
+                      dropdownBox: true,
                       backgroundColor: bgColor,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: defaultPadding,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: Container(
+                      height: MediaQuery.of(context).size.width * 0.2,
+                      decoration: BoxDecoration(
+                        color: bgColor,
+                        borderRadius:
+                            BorderRadius.circular(defaultBorderRadius),
+                      ),
+                      child: GridView.builder(
+                          itemCount: episodes.length + 1,
+                          padding: EdgeInsets.all(defaultPadding),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisSpacing: 4.0,
+                            crossAxisSpacing: 4.0,
+                            crossAxisCount: _crossAxisCount,
+                            childAspectRatio: _aspectRatio,
+                          ),
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return GestureDetector(
+                                onTap: () {
+                                  _addEpisode();
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: BorderRadius.circular(
+                                        defaultBorderRadius),
+                                  ),
+                                  child: Center(
+                                    child: Icon(Icons.add),
+                                  ),
+                                ),
+                              );
+                            }
+                            return GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.red[400],
+                                  borderRadius: BorderRadius.circular(
+                                      defaultBorderRadius),
+                                ),
+                                child: Center(
+                                  child: Icon(Icons.movie),
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      child: null,
                     ),
                   ),
                 ],
@@ -344,12 +450,8 @@ class _MovieFormTabState extends State<MovieFormTab> {
     DateTime date = await showDatePicker(
       context: context,
       initialDate: pickedDate,
-      firstDate: DateTime(DateTime
-          .now()
-          .year - 20),
-      lastDate: DateTime(DateTime
-          .now()
-          .year + 5),
+      firstDate: DateTime(DateTime.now().year - 20),
+      lastDate: DateTime(DateTime.now().year + 5),
     );
 
     if (date != null) {
@@ -359,5 +461,103 @@ class _MovieFormTabState extends State<MovieFormTab> {
       });
     }
     ;
+  }
+
+  _addEpisode() {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          final txtEpFile = TextEditingController();
+          final txtEpGgDrive = TextEditingController();
+          final txtEpOneDrive = TextEditingController();
+          return AlertDialog(
+            titlePadding: const EdgeInsets.all(8.0),
+            contentPadding: const EdgeInsets.all(8.0),
+            title: Text('Add Episode'),
+            content: Container(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: Column(
+                children: [
+                  TextEditFormFill(
+                    controller: txtEpFile,
+                    color: Colors.white,
+                    labelText: 'Upload File',
+                    backgroundColor: bgColor,
+                    readOnly: true,
+                    onTap: (){
+                      pickFile();
+                    },
+                    suffixIcon: Container(
+                      padding: EdgeInsets.all(defaultPadding * 0.75),
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF007EE5).withOpacity(0.1),
+                        borderRadius:
+                        const BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Icon(
+                        Icons.upload_file,
+                        color: Color(0xFF007EE5),
+                        size: 14,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: defaultPadding,),
+                  TextEditFormFill(
+                    controller: txtEpGgDrive,
+                    color: Colors.white,
+                    labelText: 'Google Drive',
+                    backgroundColor: bgColor,
+                    suffixIcon: Container(
+                      padding: EdgeInsets.all(defaultPadding * 0.75),
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFFA113).withOpacity(0.1),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: SvgPicture.asset(
+                        'assets/icons/google_drive.svg',
+                        color: Color(0xFFFFA113),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: defaultPadding,),
+                  TextEditFormFill(
+                    controller: txtEpOneDrive,
+                    color: Colors.white,
+                    labelText: 'One Drive',
+                    backgroundColor: bgColor,
+                    suffixIcon: Container(
+                      padding: EdgeInsets.all(defaultPadding * 0.75),
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFA4CDFF).withOpacity(0.1),
+                        borderRadius:
+                        const BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: SvgPicture.asset(
+                        'assets/icons/one_drive.svg',
+                        color: Color(0xFFA4CDFF),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              buttonDefault(
+                label: 'Add',
+                onTap: (){
+
+                }
+              )
+            ],
+          );
+        });
   }
 }
