@@ -65,6 +65,31 @@ class Movie {
         "name": "storyline",
         "label": "Storyline",
       },
+      "categories": {
+        "type": "array",
+        "name": "categories",
+        "label": "Categories",
+      },
+      "countries": {
+        "type": "array",
+        "name": "countries",
+        "label": "Countries",
+      },
+      "languages": {
+        "type": "array",
+        "name": "languages",
+        "label": "Languages",
+      },
+      "directors": {
+        "type": "array",
+        "name": "directors",
+        "label": "Directors",
+      },
+       "cast": {
+        "type": "array",
+        "name": "stars",
+        "label": "Stars",
+      },
       "views": {
         "type": "Number",
         "name": "views",

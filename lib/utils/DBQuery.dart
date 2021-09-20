@@ -19,8 +19,10 @@ class DBQuery{
   Future findOne(id) async {
     var url = Uri.parse('${this.uri}/view?_id=${id.toString()}');
 
-    print(url);
     var response = await http.get(url, headers: AppConfig.headers);
+
+    print(url);
+    print(response.body);
 
     if (response.statusCode == 200)
       return json.decode(response.body);
@@ -32,7 +34,11 @@ class DBQuery{
     var url = Uri.parse('${this.uri}/view?${getQueryString(params)}');
 
     print(url);
+
     var response = await http.get(url, headers: AppConfig.headers);
+
+    print(url);
+    print(response.body);
 
     if (response.statusCode == 200)
       return json.decode(response.body);
