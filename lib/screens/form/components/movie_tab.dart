@@ -39,7 +39,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
   final txtCasts = TextEditingController();
   final txtLanguages = TextEditingController();
 
-  var formData = [
+  var form = [
     {
       'name': 'Odds',
       'value': false,
@@ -50,7 +50,9 @@ class _MovieFormTabState extends State<MovieFormTab> {
     }
   ];
 
-  List<Map<String, dynamic>> episodes = [];
+  Map episode = {};
+
+  var episodes = [];
 
   void initState() {
     super.initState();
@@ -67,6 +69,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
       txtVoted.text = widget.data['pointVoted'].toString();
       txtEpisodes.text = widget.data['nEpisodes'].toString();
       txtViews.text = widget.data['views'].toString();
+      episodes = widget.data['fIds'];
     }
   }
 
@@ -74,11 +77,11 @@ class _MovieFormTabState extends State<MovieFormTab> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var _crossAxisSpacing = defaultPadding;
-    var _crossAxisCount = 5;
+    var _crossAxisCount = 10;
     var _width =
-        (screenSize.width * 0.9 - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
+        (screenSize.width * 0.6 - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
             _crossAxisCount;
-    var cellHeight = 100;
+    var cellHeight = 50;
     var _aspectRatio = _width / cellHeight;
     print('${_aspectRatio}, ${_width}');
     return Container(
@@ -142,7 +145,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
                             labelText: 'Form',
                             backgroundColor: bgColor,
                             readOnly: true,
-                            data: formData,
+                            data: form,
                             dropdownBox: true,
                             controller: txtForm,
                           ),
@@ -418,16 +421,15 @@ class _MovieFormTabState extends State<MovieFormTab> {
                               );
                             }
                             return GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.red[400],
                                   borderRadius: BorderRadius.circular(
                                       defaultBorderRadius),
                                 ),
-                                child: Center(
-                                  child: Icon(Icons.movie),
-                                ),
+                                child: Center(child: Text(episodes[index-1]['index'].toString())),
                               ),
                             );
                           }),
@@ -464,12 +466,17 @@ class _MovieFormTabState extends State<MovieFormTab> {
   }
 
   _addEpisode() {
+    final txtEpNum = TextEditingController();
+    final txtEpFile = TextEditingController();
+    final txtEpGgDrive = TextEditingController();
+    final txtEpHydrax = TextEditingController();
     showDialog(
         context: context,
         builder: (ctx) {
-          final txtEpFile = TextEditingController();
-          final txtEpGgDrive = TextEditingController();
-          final txtEpOneDrive = TextEditingController();
+          List<Map<String, dynamic>> servers = [
+            {'name': 'fId', 'text_edit_controller': txtEpGgDrive},
+            {'name': 'hydrax', 'text_edit_controller': txtEpHydrax}
+          ];
           return AlertDialog(
             titlePadding: const EdgeInsets.all(8.0),
             contentPadding: const EdgeInsets.all(8.0),
@@ -477,8 +484,16 @@ class _MovieFormTabState extends State<MovieFormTab> {
             content: Container(
               width: MediaQuery.of(context).size.width * 0.3,
               height: MediaQuery.of(context).size.height * 0.4,
-              child: Column(
+              child: ListView(
                 children: [
+                  TextEditFormFill(
+                    inputType: TextInputType.number,
+                    controller: txtEpNum,
+                    color: Colors.white,
+                    labelText: 'Episode',
+                    backgroundColor: bgColor,
+                  ),
+                  SizedBox(height: defaultPadding,),
                   TextEditFormFill(
                     controller: txtEpFile,
                     color: Colors.white,
@@ -527,24 +542,10 @@ class _MovieFormTabState extends State<MovieFormTab> {
                   ),
                   SizedBox(height: defaultPadding,),
                   TextEditFormFill(
-                    controller: txtEpOneDrive,
+                    controller: txtEpHydrax,
                     color: Colors.white,
-                    labelText: 'One Drive',
+                    labelText: 'Hydrax',
                     backgroundColor: bgColor,
-                    suffixIcon: Container(
-                      padding: EdgeInsets.all(defaultPadding * 0.75),
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFA4CDFF).withOpacity(0.1),
-                        borderRadius:
-                        const BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: SvgPicture.asset(
-                        'assets/icons/one_drive.svg',
-                        color: Color(0xFFA4CDFF),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -553,7 +554,19 @@ class _MovieFormTabState extends State<MovieFormTab> {
               buttonDefault(
                 label: 'Add',
                 onTap: (){
+                  episode['index'] = txtEpNum.text;
+                  episode['servers'] = servers.map((server) {
+                    return {
+                      'label': server['name'],
+                      'video': server['text_edit_controller'].text,
+                    };
+                  });
+                  episodes.add(episode);
+                  print(episodes.toString());
+                  Navigator.pop(ctx);
+                  setState(() {
 
+                  });
                 }
               )
             ],

@@ -66,29 +66,34 @@ class Movie {
         "label": "Storyline",
       },
       "categories": {
-        "type": "array",
+        "type": "Array",
         "name": "categories",
         "label": "Categories",
       },
       "countries": {
-        "type": "array",
+        "type": "Array",
         "name": "countries",
         "label": "Countries",
       },
       "languages": {
-        "type": "array",
+        "type": "Array",
         "name": "languages",
         "label": "Languages",
       },
       "directors": {
-        "type": "array",
+        "type": "Array",
         "name": "directors",
         "label": "Directors",
       },
        "cast": {
-        "type": "array",
+        "type": "Array",
         "name": "stars",
         "label": "Stars",
+      },
+      "episodes": {
+        "type": "Array",
+        "name": "fIds",
+        "label": "Episodes",
       },
       "views": {
         "type": "Number",
