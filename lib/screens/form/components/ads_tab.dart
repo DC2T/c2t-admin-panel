@@ -4,16 +4,16 @@ import 'package:admin/constants.dart';
 import 'package:admin/models/Worker.dart';
 import 'package:admin/screens/reuseable/text_form_customize.dart';
 
-class ServerFormTab extends StatefulWidget {
+class AdsFormTab extends StatefulWidget {
   var data;
 
-  ServerFormTab({this.data});
+  AdsFormTab({this.data});
 
   @override
-  _ServerFormTabState createState() => _ServerFormTabState();
+  _AdsFormTabState createState() => _AdsFormTabState();
 }
 
-class _ServerFormTabState extends State<ServerFormTab> {
+class _AdsFormTabState extends State<AdsFormTab> {
   bool obscureText = false;
   bool isUpdate = false;
   TextEditingController txtIP = TextEditingController();

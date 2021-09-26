@@ -309,6 +309,16 @@ class _CatalogTableState extends State<CatalogTable> {
                 width: 50,
                 height: 50,
                 leading: Icon(Icons.delete, size: 14,),
+                onTap: () {
+                  switch (widget.table) {
+                    case "Worker":
+                      _showDialog("worker", data["_id"]);
+                      break;
+                    case "Movie":
+                      _showDialog("movie", data["_id"]);
+                      break;
+                  }
+                }
               ),
             ],
           );
@@ -327,5 +337,60 @@ class _CatalogTableState extends State<CatalogTable> {
       page += 1;
       setState(() {});
     }
+  }
+
+  _showDialog(String type, String id) {
+    print(id);
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          content: Text('Are you sure delete this item'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context, 
+                  builder: (_) {
+                    return AlertDialog(
+                      content: FutureBuilder(
+                        future: _delete(type, id),
+                        builder: (context, snapshot) {
+                          if(snapshot.hasData) {
+                            return Text('Success');
+                          }
+                          return CircularProgressIndicator();
+                        }),
+                    );
+                  }
+                );
+              }, 
+              child: Text('Yes')
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+              child: Text('No')
+            ),
+          ],
+        );
+      });
+  }
+
+  _delete(String type, String id) {   
+    print(id); 
+    var result;
+    switch (type) {
+      case "worker":
+        result = Worker.delete(id);
+        break;
+      case "movie":
+        result = Movie.delete(id);
+        break;
+      default:
+    }
+    return result;
   }
 }

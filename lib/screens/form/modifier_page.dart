@@ -1,6 +1,8 @@
 import 'package:admin/constants.dart';
+import 'package:admin/screens/form/components/ads_tab.dart';
 import 'package:admin/screens/form/components/movie_tab.dart';
 import 'package:admin/screens/form/components/server_tab.dart';
+import 'package:admin/screens/form/components/ads_tab.dart';
 import 'package:admin/screens/reuseable/header.dart';
 import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +44,7 @@ class _ModifierPageState extends State<ModifierPage> {
             ),
             SizedBox(height: defaultPadding),
             DefaultTabController(
-              length: 2,
+              length: 3,
               initialIndex: tabIndex,
               child: Builder(builder: (context) {
                 TabController tabController =
@@ -81,6 +83,7 @@ class _ModifierPageState extends State<ModifierPage> {
                           child: TabBarView(children: [
                             MovieFormTab(data: widget.tabName == 'Movie' ?widget.data:null,),
                             ServerFormTab(data: widget.tabName == 'Worker' ?widget.data:null,),
+                            AdsFormTab(data: widget.tabName == 'Advertising' ?widget.data:null,),
                           ]),
                         ),
                       ],
