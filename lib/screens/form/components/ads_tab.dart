@@ -16,28 +16,27 @@ class AdsFormTab extends StatefulWidget {
 class _AdsFormTabState extends State<AdsFormTab> {
   bool obscureText = false;
   bool isUpdate = false;
-  TextEditingController txtIP = TextEditingController();
-  TextEditingController txtUserName = TextEditingController();
-  TextEditingController txtPassWord = TextEditingController();
-  TextEditingController txtRent = TextEditingController();
+  TextEditingController txtFrom = TextEditingController();
+  TextEditingController txtVideo = TextEditingController();
   TextEditingController txtStatus = TextEditingController();
-  TextEditingController txtRam = TextEditingController();
-  TextEditingController txtCpu = TextEditingController();
-  TextEditingController txtDisk = TextEditingController();
+  TextEditingController txtPos = TextEditingController();
+  TextEditingController txtLeft = TextEditingController();
+  TextEditingController txtRight = TextEditingController();
+  TextEditingController txtTop = TextEditingController();
+  TextEditingController txtBottom = TextEditingController();
+  TextEditingController txtAlign = TextEditingController();
+  TextEditingController txtPosition = TextEditingController();
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     if (widget.data != null) {
-      txtIP.text = widget.data['ip'];
-      txtUserName.text = widget.data['username'];
-      txtPassWord.text = widget.data['password'];
-      txtRent.text = widget.data['rent'];
+      txtFrom.text = widget.data['from'];
+      txtVideo.text = widget.data['video'];
+      txtPosition.text = widget.data['position'];
       txtStatus.text = widget.data['status'];
-      txtRam.text = widget.data['ram'];
-      txtCpu.text = widget.data['cpu'];
-      txtDisk.text = widget.data['disk'];
 
       setState(() {
         isUpdate = true;
@@ -58,9 +57,9 @@ class _AdsFormTabState extends State<AdsFormTab> {
             Expanded(
               flex: 2,
               child: TextEditFormFill(
-                controller: txtIP,
+                controller: txtFrom,
                 color: Colors.white,
-                labelText: 'IP ADDRESS',
+                labelText: 'FROM',
                 backgroundColor: bgColor,
               ),
             ),
@@ -68,9 +67,9 @@ class _AdsFormTabState extends State<AdsFormTab> {
             Expanded(
               flex: 2,
               child: TextEditFormFill(
-                controller: txtRent,
+                controller: txtVideo,
                 color: Colors.white,
-                labelText: 'RENT',
+                labelText: 'VIDEO',
                 backgroundColor: bgColor,
               ),
             )
@@ -82,43 +81,6 @@ class _AdsFormTabState extends State<AdsFormTab> {
             Expanded(
               flex: 2,
               child: TextEditFormFill(
-                controller: txtUserName,
-                color: Colors.white,
-                labelText: 'USER NAME',
-                backgroundColor: bgColor,
-              ),
-            ),
-            SizedBox(width: defaultPadding),
-            Expanded(
-              flex: 2,
-              child: TextEditFormFill(
-                  controller: txtPassWord,
-                  color: Colors.white,
-                  labelText: 'PASSWORD',
-                  backgroundColor: bgColor,
-                  maxLine: 1,
-                  obscureText: obscureText,
-                  suffixIcon: buttonDefault(
-                    width: 30,
-                    height: 30,
-                    onTap: () {
-                      setState(() {
-                        obscureText = !obscureText;
-                      });
-                    },
-                    leading: obscureText
-                        ? Icon(Icons.visibility, size: 14,)
-                        : Icon(Icons.visibility_off, size: 14,)
-                  )),
-            ),
-          ],
-        ),
-        SizedBox(height: defaultPadding),
-        Row(
-          children: [
-            Expanded(
-              flex: 4,
-              child: TextEditFormFill(
                 controller: txtStatus,
                 color: Colors.white,
                 labelText: 'STATUS',
@@ -127,30 +89,15 @@ class _AdsFormTabState extends State<AdsFormTab> {
             ),
             SizedBox(width: defaultPadding),
             Expanded(
-              flex: 4,
+              flex: 2,
               child: TextEditFormFill(
-                controller: txtRam,
+                controller: txtPos,
                 color: Colors.white,
-                labelText: 'RAM',
+                labelText: 'POSITION',
                 backgroundColor: bgColor,
-              ),
-            ),
-            SizedBox(width: defaultPadding),Expanded(
-              flex: 4,
-              child: TextEditFormFill(
-                controller: txtCpu,
-                color: Colors.white,
-                labelText: 'CPU',
-                backgroundColor: bgColor,
-              ),
-            ),
-            SizedBox(width: defaultPadding),Expanded(
-              flex: 4,
-              child: TextEditFormFill(
-                controller: txtDisk,
-                color: Colors.white,
-                labelText: 'DISK',
-                backgroundColor: bgColor,
+                onTap: () {
+                  _choosePosition();
+                },
               ),
             ),
           ],
@@ -175,10 +122,12 @@ class _AdsFormTabState extends State<AdsFormTab> {
             onPressed: () {
               if(isUpdate) {
                 //upadate worker
-                _showDialog('update');
+                //_showDialog('update');
+                print("update");
               } else {
                 //add worker
-                _showDialog('add');
+                //_showDialog('add');
+                print("add");
               }
             },
           ),
@@ -187,7 +136,7 @@ class _AdsFormTabState extends State<AdsFormTab> {
     );
   }
 
-  _showDialog(String func) {
+  _alertDialog(String func) {
     showDialog(
       context: context, 
       builder: (_) {
@@ -202,7 +151,7 @@ class _AdsFormTabState extends State<AdsFormTab> {
                   builder: (_) {
                     return AlertDialog(
                       content: FutureBuilder(
-                        future: _modifiWorker(func),
+                        future: _modifiAds(func),
                         builder: (context, snapshot) {
                           if(snapshot.hasData) {
                             return Text('Success');
@@ -226,30 +175,96 @@ class _AdsFormTabState extends State<AdsFormTab> {
       });
   }
 
-  _modifiWorker(String func) {
+  _modifiAds(String func) {
     var id = (widget.data != null) ? widget.data["_id"] : "";
     Map<String, dynamic> data = {
-      "ip" : txtIP.text,
-      "username" : txtUserName.text,
-      "password" : txtPassWord.text,
-      "rent" : txtRent.text,
+      "from" : txtFrom.text,
+      "video" : txtVideo.text,
+      "position" : txtPosition.text,
       "status" : txtStatus.text,
-      "ram" : txtRam.text,
-      "cpu" : txtCpu.text,
-      "disk" : txtDisk.text,
     };
 
     var result;
     switch (func) {
       case "add":
-        result = Worker.create(data);
+        print("added");
         break;
       case "update":
-        result = Worker.update(id, data);
+      print("updated");
         break;
       default:
     }
     print(result);
     return result;
+  }
+
+  _choosePosition() {
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.3,
+            height: MediaQuery.of(context).size.height * 0.8,
+            padding: EdgeInsets.all(defaultPadding / 2),
+            child: Column(
+              children: [
+                TextEditFormFill(
+                  controller: txtLeft,
+                  labelText: "LEFT",
+                  color: Colors.white,
+                  backgroundColor: bgColor,
+                ),
+                SizedBox(height: defaultPadding),
+                TextEditFormFill(
+                  controller: txtRight,
+                  labelText: "RIGHT",
+                  color: Colors.white,
+                  backgroundColor: bgColor,
+                ),
+                SizedBox(height: defaultPadding),
+                TextEditFormFill(
+                  controller: txtTop,
+                  labelText: "TOP",
+                  color: Colors.white,
+                  backgroundColor: bgColor,
+                ),
+                SizedBox(height: defaultPadding),
+                TextEditFormFill(
+                  controller: txtBottom,
+                  labelText: "BOTTOM",
+                  color: Colors.white,
+                  backgroundColor: bgColor,
+                ),
+                SizedBox(height: defaultPadding),
+                TextEditFormFill(
+                  controller: txtAlign,
+                  labelText: "ALIGN",
+                  color: Colors.white,
+                  backgroundColor: bgColor,
+                ),
+                SizedBox(height: defaultPadding),
+                TextEditFormFill(
+                  controller: txtPosition,
+                  labelText: "POSITION",
+                  color: Colors.white,
+                  backgroundColor: bgColor,
+                ),
+                SizedBox(height: defaultPadding),
+                Center(
+                  child: buttonDefault(
+                    label: "OK",
+                    width: 100,
+                    height: 50,
+                    onTap: () {
+                      Navigator.pop(context, true);
+                    }
+                  )
+                )
+              ],
+            )
+          )
+        );
+      });
   }
 }

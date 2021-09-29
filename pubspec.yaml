@@ -37,6 +37,7 @@ dependencies:
   multi_select_flutter:
   intl:
   progressive_image:
+  flutter_tags: ^0.4.9+1
 
 dev_dependencies:
   flutter_test:

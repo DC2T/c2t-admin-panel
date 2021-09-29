@@ -8,7 +8,8 @@ import 'package:intl/intl.dart';
 
 final List<Map<String, dynamic>> tables = <Map<String, dynamic>>[
   {'name': 'Movie', 'icon': Icon(Icons.movie_creation_outlined)},
-  {'name': 'Worker', 'icon': Icon(Icons.cloud_outlined)}
+  {'name': 'Worker', 'icon': Icon(Icons.cloud_outlined)},
+  {'name': 'Advertising', 'icon': Icon(Icons.campaign)},
 ];
 
 String formatDate(DateTime d){

@@ -7,6 +7,8 @@ import 'package:admin/models/Keyword.dart';
 import 'package:admin/models/Language.dart';
 import 'package:admin/utils/global.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/flutter_tags.dart';
+
 
 class TextEditFormFill extends StatefulWidget {
   TextInputType inputType;
@@ -291,5 +293,153 @@ class _TextEditFormFillState extends State<TextEditFormFill> with SingleTickerPr
   dropdownItem(data){
     print(data);
     return Text(data['name'].toString());
+  }
+}
+
+
+
+//----------------------------------------------------------------
+class InputTag extends StatefulWidget {
+  String title;
+  List<String> suggestionItems;
+  Function addItem;
+  Function removeItem;
+
+  InputTag({ 
+    Key key,
+    this.title,
+    this.suggestionItems,
+    this.addItem,
+    this.removeItem,
+     }) : super(key: key);
+
+  @override
+  _InputTagState createState() => _InputTagState();
+}
+
+class _InputTagState extends State<InputTag> {
+  List _items = [];
+  List<String> _suggestionItems; 
+
+  String _currentStarInput = '';
+  double _fontSize = 14;
+  final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
+
+  @override
+  void initState() {
+   _suggestionItems = widget.suggestionItems;
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Text(widget.title)
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(left: defaultPadding),
+            decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.circular(defaultBorderRadius),
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Tags(
+                    key:_tagStateKey,
+                    itemCount: _items.length,
+                    heightHorizontalScroll: 48,
+                    horizontalScroll: true, 
+                    spacing: 2,
+                    textField: TagsTextField(
+                      inputDecoration: InputDecoration(
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                      ),
+                      autofocus: false,
+                      textStyle: TextStyle(fontSize: _fontSize),
+                      constraintSuggestion: true,
+                      suggestions: _suggestionItems,
+                      onSubmitted: (str) {
+                        setState(() {
+                          _items.add(Item(title: str,));
+                        });
+                        print(_items);
+                        widget.addItem(str);
+                      },
+                      onChanged: (str) {
+                        setState(() {
+                          _currentStarInput = str;
+                        });
+                      }
+                    ),                           
+                    itemBuilder: (index){          
+                          final Item item = _items[index];
+                          return ItemTags(
+                                index: index,
+                                title: item.title,
+                                customData: item.customData,
+                                textStyle: TextStyle( fontSize: _fontSize,),  
+                                removeButton: ItemTagsRemoveButton(
+                                  onRemoved: (){
+                                      setState(() {
+                                          _items.removeAt(index);
+                                          widget.removeItem(index);
+                                      });
+                                      return true;
+                                  },
+                                ),
+                                onPressed: (item) => print(item),
+                          );
+                  
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      _showDialog();
+                    },
+                  )
+                ],
+              ),
+            )
+          ),
+        ],
+      ),
+    );
+  }
+
+  _showDialog() {
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          title: Text('Are you sure?'),
+          actions: [
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                setState(() {
+                  _items.add(Item(title: _currentStarInput));
+                  _suggestionItems.add(_currentStarInput);
+                  widget.addItem(_currentStarInput);
+                });
+                Navigator.pop(context);
+              }
+            ),
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.pop(context);
+              }
+            )
+          ],
+        );
+      });
   }
 }

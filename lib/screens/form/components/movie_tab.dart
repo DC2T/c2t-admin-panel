@@ -17,6 +17,7 @@ class MovieFormTab extends StatefulWidget {
 }
 
 class _MovieFormTabState extends State<MovieFormTab> {
+  bool isUpdate;
   String img = '';
   String title = '';
   DateTime pickedDate;
@@ -51,6 +52,11 @@ class _MovieFormTabState extends State<MovieFormTab> {
   ];
 
   Map episode = {};
+  List categories = [];
+  List cast = [];
+  List directors = [];
+  List languages = [];
+  List countries = [];
 
   var episodes = [];
 
@@ -58,6 +64,7 @@ class _MovieFormTabState extends State<MovieFormTab> {
     super.initState();
     pickedDate = DateTime.now();
     if (widget.data != null) {
+      isUpdate = true;
       txtTitle.text = widget.data['title'];
       txtSubTitle.text = widget.data['subTitle'];
       txtStoryLine.text = widget.data['storyline'];
@@ -83,7 +90,10 @@ class _MovieFormTabState extends State<MovieFormTab> {
             _crossAxisCount;
     var cellHeight = 50;
     var _aspectRatio = _width / cellHeight;
-    print('${_aspectRatio}, ${_width}');
+
+    
+
+    //print('${_aspectRatio}, ${_width}');
     return Container(
         width: screenSize.width,
         height: screenSize.height,
@@ -315,66 +325,49 @@ class _MovieFormTabState extends State<MovieFormTab> {
                 height: defaultPadding,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: TextEditFormFill(
-                      controller: txtCategories,
-                      color: Colors.white,
-                      labelText: 'Categories',
-                      dropdownBox: true,
-                      backgroundColor: bgColor,
+                    flex: 6,
+                    child: InputTag(
+                      title: "Cast",
+                      addItem: (str) {
+                        setState(() {
+                          cast.add(str);
+                        });
+                        print(cast);
+                      },
+                      removeItem: (index) {
+                        setState(() {
+                          cast.removeAt(index);
+                          print(cast);
+                        });
+                      },
+                      suggestionItems: ["haha", "hihi", "hehe"],
                     ),
                   ),
                   SizedBox(
                     width: defaultPadding,
                   ),
                   Expanded(
-                    child: TextEditFormFill(
-                      controller: txtDirectors,
-                      color: Colors.white,
-                      labelText: 'Directors',
-                      dropdownBox: true,
-                      backgroundColor: bgColor,
+                    flex: 6,
+                    child: InputTag(
+                      title: "Categories",
+                      addItem: (str) {
+                        setState(() {
+                          categories.add(str);
+                        });
+                        print(categories);
+                      },
+                      removeItem: (index) {
+                        setState(() {
+                          categories.removeAt(index);
+                          print(categories);
+                        });
+                      },
+                      suggestionItems: ["ac", "rm", "ct"],
                     ),
-                  ),
-                  SizedBox(
-                    width: defaultPadding,
-                  ),
-                  Expanded(
-                    child: TextEditFormFill(
-                      controller: txtCasts,
-                      color: Colors.white,
-                      labelText: 'Casts',
-                      dropdownBox: true,
-                      backgroundColor: bgColor,
-                    ),
-                  ),
-                  SizedBox(
-                    width: defaultPadding,
-                  ),
-                  Expanded(
-                    child: TextEditFormFill(
-                      controller: txtLanguages,
-                      color: Colors.white,
-                      labelText: 'Languages',
-                      dropdownBox: true,
-                      backgroundColor: bgColor,
-                    ),
-                  ),
-                  SizedBox(
-                    width: defaultPadding,
-                  ),
-                  Expanded(
-                    child: TextEditFormFill(
-                      controller: txtCountries,
-                      color: Colors.white,
-                      labelText: 'Countries',
-                      dropdownBox: true,
-                      backgroundColor: bgColor,
-                    ),
-                  ),
-                ],
+                  )
+                ]   
               ),
               SizedBox(
                 height: defaultPadding,
@@ -383,66 +376,238 @@ class _MovieFormTabState extends State<MovieFormTab> {
                 children: [
                   Expanded(
                     flex: 6,
-                    child: Container(
-                      height: MediaQuery.of(context).size.width * 0.2,
-                      decoration: BoxDecoration(
-                        color: bgColor,
-                        borderRadius:
-                            BorderRadius.circular(defaultBorderRadius),
-                      ),
-                      child: GridView.builder(
-                          itemCount: episodes.length + 1,
-                          padding: EdgeInsets.all(defaultPadding),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            mainAxisSpacing: 4.0,
-                            crossAxisSpacing: 4.0,
-                            crossAxisCount: _crossAxisCount,
-                            childAspectRatio: _aspectRatio,
-                          ),
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return GestureDetector(
-                                onTap: () {
-                                  _addEpisode();
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.circular(
-                                        defaultBorderRadius),
-                                  ),
-                                  child: Center(
-                                    child: Icon(Icons.add),
-                                  ),
-                                ),
-                              );
-                            }
-                            return GestureDetector(
-                              onTap: () {
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.red[400],
-                                  borderRadius: BorderRadius.circular(
-                                      defaultBorderRadius),
-                                ),
-                                child: Center(child: Text(episodes[index-1]['index'].toString())),
-                              ),
-                            );
-                          }),
+                    child: InputTag(
+                      title: "Directors",
+                      addItem: (str) {
+                        setState(() {
+                          directors.add(str);
+                        });
+                        print(directors);
+                      },
+                      removeItem: (index) {
+                        setState(() {
+                          directors.removeAt(index);
+                          print(directors);
+                        });
+                      },
+                      suggestionItems: ["haha", "hihi", "hehe"],
                     ),
+                  ),
+                  SizedBox(
+                    width: defaultPadding,
                   ),
                   Expanded(
-                    flex: 4,
-                    child: Container(
-                      child: null,
+                    flex: 6,
+                    child: InputTag(
+                      title: "Languages",
+                      addItem: (str) {
+                        setState(() {
+                          languages.add(str);
+                        });
+                        print(languages);
+                      },
+                      removeItem: (index) {
+                        setState(() {
+                          languages.removeAt(index);
+                          print(languages);
+                        });
+                      },
+                      suggestionItems: ["ac", "rm", "ct"],
+                    ),
+                  )
+                ]   
+              ),SizedBox(
+                height: defaultPadding,
+              ),
+              SizedBox(
+                height: defaultPadding,
+              ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Expanded(
+              //       child: TextEditFormFill(
+              //         controller: txtCategories,
+              //         color: Colors.white,
+              //         labelText: 'Categories',
+              //         dropdownBox: true,
+              //         backgroundColor: bgColor,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: defaultPadding,
+              //     ),
+              //     Expanded(
+              //       child: TextEditFormFill(
+              //         controller: txtDirectors,
+              //         color: Colors.white,
+              //         labelText: 'Directors',
+              //         dropdownBox: true,
+              //         backgroundColor: bgColor,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: defaultPadding,
+              //     ),
+              //     Expanded(
+              //       child: TextEditFormFill(
+              //         controller: txtCasts,
+              //         color: Colors.white,
+              //         labelText: 'Casts',
+              //         dropdownBox: true,
+              //         backgroundColor: bgColor,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: defaultPadding,
+              //     ),
+              //     Expanded(
+              //       child: TextEditFormFill(
+              //         controller: txtLanguages,
+              //         color: Colors.white,
+              //         labelText: 'Languages',
+              //         dropdownBox: true,
+              //         backgroundColor: bgColor,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: defaultPadding,
+              //     ),
+              //     Expanded(
+              //       child: TextEditFormFill(
+              //         controller: txtCountries,
+              //         color: Colors.white,
+              //         labelText: 'Countries',
+              //         dropdownBox: true,
+              //         backgroundColor: bgColor,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: InputTag(
+                        title: "Countries",
+                        addItem: (str) {
+                          setState(() {
+                            countries.add(str);
+                          });
+                          print(countries);
+                        },
+                        removeItem: (index) {
+                          setState(() {
+                            countries.removeAt(index);
+                            print(countries);
+                          });
+                        },
+                        suggestionItems: ["haha", "hihi", "hehe"],
+                      ),
+                  ),
+                  SizedBox(width: defaultPadding),
+                  Expanded(
+                    flex: 6,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Text("Episode"),
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.width * 0.2,
+                          decoration: BoxDecoration(
+                            color: bgColor,
+                            borderRadius:
+                                BorderRadius.circular(defaultBorderRadius),
+                          ),
+                          child: GridView.builder(
+                              itemCount: episodes.length + 1,
+                              padding: EdgeInsets.all(defaultPadding),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                mainAxisSpacing: 4.0,
+                                crossAxisSpacing: 4.0,
+                                crossAxisCount: _crossAxisCount,
+                                childAspectRatio: _aspectRatio,
+                              ),
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      _addEpisode();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(
+                                            defaultBorderRadius),
+                                      ),
+                                      child: Center(
+                                        child: Icon(Icons.add),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return GestureDetector(
+                                  onTap: () {
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.red[400],
+                                      borderRadius: BorderRadius.circular(
+                                          defaultBorderRadius),
+                                    ),
+                                    child: Center(child: Text(episodes[index-1]['index'].toString())),
+                                  ),
+                                );
+                              }),
+                        ),
+                      ],
                     ),
                   ),
+                  // Expanded(
+                  //   flex: 4,
+                  //   child: Container(
+                  //     child: null,
+                  //   ),
+                  // ),
                 ],
               ),
+              
+              SizedBox(
+                height: defaultPadding * 2,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  child: Text('SUBMIT',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      )),
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+                    backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+                  ),
+                  onPressed: () {
+                    if(isUpdate) {
+                      //upadate worker
+                      _verifyAddOrUpdate('update');
+                    } else {
+                      //add worker
+                      _verifyAddOrUpdate('add');
+                    }
+                  },
+                ),
+              )
             ],
           ),
         ));
@@ -572,5 +737,53 @@ class _MovieFormTabState extends State<MovieFormTab> {
             ],
           );
         });
+  }
+
+  _verifyAddOrUpdate(String func) {
+    var data;
+    var id;
+    Future<Map<String, dynamic>> action;
+    if(func == "add") {
+      action = Movie.create(data);
+    } else if(func == "update") {
+      action = Movie.update(id, data);
+    }
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          content: Text('Are you sure $func this item'),
+          actions: [
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context, 
+                  builder: (_) {
+                    return AlertDialog(
+                      content: FutureBuilder(
+                        future: Movie.create(func),
+                        builder: (context, snapshot) {
+                          if(snapshot.hasData) {
+                            return Text('Success');
+                          }
+                          return CircularProgressIndicator();
+                        }),
+                    );
+                  }
+                );
+              }, 
+              
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+              child: Text('No')
+            ),
+          ],
+        );
+      });
   }
 }
